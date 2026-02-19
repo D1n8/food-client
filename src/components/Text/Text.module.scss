@@ -1,0 +1,45 @@
+@import '../../variables.scss';
+
+.textContainer {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: inherit;
+}
+
+.title {
+    font-weight: 700;
+    font-size: 44px;
+}
+
+.button {
+    font-size: 18px;
+}
+
+.p-20 {
+    font-size: 20px;
+}
+
+.p-18 {
+    font-size: 18px;
+}
+
+.p-16 {
+    font-size: 16px;
+}
+
+.p-14 {
+    font-size: 14px;
+}
+
+.primary {
+    color: black;
+}
+
+.secondary {
+    color: rgba(175, 173, 181, 1);
+}
+
+.accent {
+    color: $brand;
+}

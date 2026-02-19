@@ -1,0 +1,39 @@
+.header {
+    width: 100%;
+}
+
+.headerContainer {
+    height: 64px;
+    display: flex;
+    padding-inline: 100px;
+    gap: 80px;
+    align-items: center;
+}
+
+.title{
+    width: 105px;
+}
+
+.nav {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.headerLogo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.pageLinks {
+    display: flex;
+    gap: 16px;
+}
+
+.userInfo{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
