@@ -1,0 +1,17 @@
+.listPage{
+
+}
+
+.list{
+    display: grid;
+    width: 100%;
+    margin-block: 48px;
+    grid-template-columns: repeat(3, 360px);
+    gap: 80px;
+}
+
+.caption{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}

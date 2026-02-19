@@ -1,0 +1,53 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    max-width: 360px;
+    height: 578px;
+    border-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.card:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+img{
+    height: 360px;
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    background-color: #D9D9D9;
+}   
+
+.cardDescr {
+    flex: 1px;
+    display: flex;
+    padding: 24px 12px;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.textBox{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.captionSlot{
+    display: flex;
+    gap: 5px;
+}
+
+.subtitle{
+    // margin-bottom: 20px;
+    line-height: 1.25;
+}
+
+.bottomContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+

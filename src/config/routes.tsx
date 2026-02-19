@@ -13,7 +13,7 @@ export const routesConfig: RouteObject[] = [
             element: <RecipesList/>
         },
         {
-            path: '/recipe/:id',
+            path: '/recipes/:id',
             element: <Recipe/>
         }
     ]
