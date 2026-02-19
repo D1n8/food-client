@@ -1,12 +1,17 @@
-import Header from './Header'
-import './App.scss'
+import Header from './components/Header'
+import styles from './App.module.scss'
+import { Outlet } from 'react-router'
+
 
 function App() {
 
   return (
-    <>
-      <Header/>
-    </>
+    <div className={styles.app}>
+      <Header />
+      <main>
+        <Outlet />
+      </main>
+    </div>
   )
 }
 

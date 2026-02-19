@@ -15,6 +15,7 @@
     "classnames": "^2.5.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-router": "^7.13.0",
     "sass-embedded": "^1.97.3"
   },
   "devDependencies": {
