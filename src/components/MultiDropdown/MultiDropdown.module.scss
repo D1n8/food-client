@@ -1,0 +1,37 @@
+@import '../../variables.scss';
+
+.multiDropdown {
+    position: relative;
+}
+
+.multiDropdownInput{
+    width: 300px;
+}
+
+.multiDropdownOptions {
+    width: 300px;
+    position: absolute;
+    top: 100%;
+    margin-top: 8px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.multiDropdownOption {
+    padding: 14px 12px;
+    cursor: pointer;
+}
+
+
+.selected {
+    color: $brand;
+}
+
+.multiDropdownNoOptions {
+    padding: 10px 12px;
+    font-size: 14px;
+}
+
+.multiDropdown:focus-within {
+    border-color: $brand;
+}

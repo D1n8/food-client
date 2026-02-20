@@ -29,7 +29,7 @@ const RecipeCard: React.FC<CardProps> = (props) => {
                     <Text className={styles.title} view='p-20' maxLines={1}>{props.title}</Text>
                     <Text className={styles.subtitle} view='p-16' color='secondary' maxLines={2}>{props.subtitle}</Text>
                 </div>
-                
+
                 {
                     <div className={styles.bottomContainer}>
                         {props.contentSlot}
