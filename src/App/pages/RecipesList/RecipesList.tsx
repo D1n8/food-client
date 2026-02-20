@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { IRecipe } from 'App/types/types';
 import styles from './RecipesList.module.scss';
 import axios from 'axios';
+import qs from 'qs';
 import RecipeCard from './components/RecipeCard';
 import Button from 'components/Button';
 import Text from 'components/Text';
@@ -11,9 +12,17 @@ function RecipesList() {
 
     useEffect(() => {
         const fetch = async () => {
-            const data = await axios.get('https://front-school-strapi.ktsdev.ru/api/recipes?populate[0]=images')
-                .then(response => response.data.data)
-            console.log(data)
+            const data = await axios(
+                {
+                    method: "GET",
+                    url: "https://front-school-strapi.ktsdev.ru/api/recipes",
+                    params: {
+                        populate: ['images', 'ingradients']
+                    },
+                    paramsSerializer: params => qs.stringify(params, { arrayFormat: 'indices' })
+                }
+            )
+            .then(response => response.data.data)
             setRecipes(data)
         }
         fetch()
@@ -29,7 +38,12 @@ function RecipesList() {
                             key={recipe.id}
                             image={recipe.images[0].url}
                             title={recipe.name}
-                            subtitle={recipe.summary}
+                            subtitle={recipe.ingradients.reduce((acc, curr, index) => {
+                                if (index === 0) {
+                                    return acc + curr.name
+                                }
+                                return acc + ' + ' + curr.name
+                            }, '')}
                             captionSlot={
                                 <>
                                     <svg width="12" height="12" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">

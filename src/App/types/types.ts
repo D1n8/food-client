@@ -38,7 +38,8 @@ export interface IRecipe {
     rating: number,
     name: string,
     summary: string,
-    images: Image[]
+    images: Image[],
+    ingradients: Ingradient[]
 }
 
 export interface IFullRecipe extends IRecipe{
