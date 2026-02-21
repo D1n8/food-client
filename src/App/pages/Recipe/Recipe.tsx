@@ -3,6 +3,9 @@ import styles from './Recipe.module.scss'
 import { useEffect, useState } from "react";
 import type { IFullRecipe } from "App/types/types";
 import { useParams } from "react-router";
+import qs from "qs";
+import Text from "components/Text";
+import parse from 'html-react-parser';
 
 function Recipe() {
     const { id } = useParams()
@@ -10,7 +13,14 @@ function Recipe() {
 
     useEffect(() => {
         const fetch = async (id: string | undefined) => {
-            const data = await axios.get(`https://front-school-strapi.ktsdev.ru/api/recipes/${id}?populate[0]=ingradients&populate[1]=equipments&populate[2]=directions.image&populate[3]=images&populate[4]=category`)
+            const data = await axios({
+                method: "GET",
+                url: `https://front-school-strapi.ktsdev.ru/api/recipes/${id}`,
+                params: {
+                    populate: ['ingradients', 'equipments', 'directions.image', 'images', 'category']
+                },
+                paramsSerializer: params => qs.stringify(params, { arrayFormat: 'indices' })
+            })
                 .then(response => response.data.data)
             setRecipe(data)
         }
@@ -23,9 +33,11 @@ function Recipe() {
     }
 
     return (
-        <section className={styles.recipePage}>
-            {recipe.name}
-        </section>
+        <div className={styles.recipePage}>
+            <Text className={styles.title} tag='h2' view='title'>{recipe.name}</Text>
+
+            <Text className={styles.descr} tag="p" view="p-16">{parse(recipe.summary)}</Text>
+        </div>
     );
 }
 
