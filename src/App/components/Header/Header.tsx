@@ -3,6 +3,7 @@ import Text from "components/Text";
 import Favorites from "./components/Favorites";
 import User from "./components/User";
 import styles from './Header.module.scss';
+import { Link } from "react-router";
 
 function Header() {
     return (
@@ -16,11 +17,21 @@ function Header() {
                 <nav className={styles.nav}>
 
                     <ul className={styles.pageLinks}>
-                        <Text tag="li" view="p-16" color="accent">Recipes</Text>
-                        <Text tag="li" view="p-16">Meals Categories</Text>
-                        <Text tag="li" view="p-16">Products</Text>
-                        <Text tag="li" view="p-16">Menu Items</Text>
-                        <Text tag="li" view="p-16">Meal Planning</Text>
+                        <Text tag="li" view="p-16">
+                            <Link className={styles.link} to={'/'}>Recipes</Link>
+                        </Text>
+                        <Text tag="li" view="p-16">
+                            <Link className={styles.link} to={'#'}>Meals Categories</Link>
+                        </Text>
+                        <Text tag="li" view="p-16">
+                            <Link className={styles.link} to={'#'}>Products</Link>
+                        </Text>
+                        <Text tag="li" view="p-16">
+                            <Link className={styles.link} to={'#'}>Menu Items</Link>
+                        </Text>
+                        <Text tag="li" view="p-16">
+                            <Link className={styles.link} to={'#'}>Meal Planning</Link>
+                        </Text>
                     </ul>
 
                     <div className={styles.userInfo}>

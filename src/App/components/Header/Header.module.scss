@@ -1,6 +1,11 @@
+@import '../../../variables.scss';
+
 .header {
+    position: sticky;
     width: 100%;
+    top: 0;
     background-color: white;
+    z-index: 10;
 }
 
 .headerContainer {
@@ -37,4 +42,13 @@
     display: flex;
     align-items: center;
     gap: 16px;
+}
+
+.link{
+    color: black;
+    text-decoration: none;
+}
+
+.link:hover{
+    color: $brand;
 }
