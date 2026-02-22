@@ -1,17 +1,99 @@
-.recipePage{
+@import '../../../variables.scss';
+
+.recipePage {
     width: 1240px;
     margin: 50px auto;
 }
 
-.title{
-    margin-bottom: 37px;
+.btn{
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: all ease-in-out 0.3s;
 }
 
-.descr{
+.btn:hover{
+    transform: translateX(10px);
+}
+
+.topContainer{
+    margin-bottom: 37px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.about{
+    margin-bottom: 48px;
+    display: flex;
+    gap: 166px;
+    align-items: center;
+}
+
+.aboutImg{
+    width: 450px;
+    height: 300px;
+    border-radius: 10px;
+}
+
+.aboutContent{
+    display: grid;
+    grid-template-columns: repeat(3, max-content);
+    row-gap: 50px;
+    column-gap: 100px;
+}
+
+.subtitle {
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+
+.descr {
     width: 100%;
     margin-bottom: 48px;
     padding: 36px;
     padding-bottom: 29px;
     border-radius: 10px;
     background-color: rgba(181, 70, 15, 0.33);
+    line-height: 1.25;
+}
+
+.thingsContainer {
+    display: flex;
+    margin-bottom: 48px;
+}
+
+.ingradients {
+    flex-basis: 50%;
+    border-right: 1px solid $brand;
+}
+
+.equipments {
+    flex-basis: 50%;
+    padding-left: 50px;
+}
+
+.ingradientsList {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 8px;
+    column-gap: 30px;
+}
+
+.equipmentsList {
+    flex-shrink: 1;
+    display: grid;
+    grid-template-columns: max-content max-content;
+    row-gap: 8px;
+    column-gap: 30px;
+}
+
+.directions{ 
+    max-width: 740px;
+}
+
+.directionsList{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }

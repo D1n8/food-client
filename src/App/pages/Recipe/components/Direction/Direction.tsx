@@ -1,0 +1,19 @@
+import styles from './Direction.module.scss'
+import Text from 'components/Text'
+
+type DirectionProps = {
+    step: number,
+    text: string
+}
+
+function Direction({step, text}: DirectionProps) {
+    console.log(text)
+    return ( 
+        <li className={styles.direction}>
+            <Text view='p-16' className={styles.step}>Step {step}</Text>
+            <Text view='p-14' className={styles.text}>{text}</Text>
+        </li>
+     );
+}
+
+export default Direction;

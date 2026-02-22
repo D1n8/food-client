@@ -1,6 +1,11 @@
 type Image = {
     id: number,
-    url: string
+    url: string,
+    formats: {
+        medium: {
+            url: string
+        }
+    }
 }
 
 type Ingradient = {
@@ -17,7 +22,7 @@ type Equipment = {
 
 type Direction = {
     id: number,
-    name: string,
+    description: string,
     image?: string
 }
 
