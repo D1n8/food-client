@@ -43,7 +43,7 @@ function RecipesList() {
 
                 <div className={styles.inputContainer}>
                     <Input style={{ width: '100%' }} className={styles.input} value={inputDish} onChange={(value) => setInputDish(value)} placeholder='Enter dishes' />
-                    <Button style={{ padding: '14px 20px' }}>
+                    <Button>
                         <SearchIcon />
                     </Button>
                 </div>

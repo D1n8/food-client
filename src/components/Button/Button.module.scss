@@ -1,4 +1,4 @@
-@import '../../variables.scss';
+@import '../../mixins.scss';
 
 .btn{
     display: flex;
@@ -12,6 +12,22 @@
     color: rgba(255, 255, 255, 1);
     background-color: $brand;
     cursor: pointer;
+
+    @include respond(lg) {
+        padding: 12px 15px;
+        font-size: 16px;
+    }
+
+    @include respond(md) {
+        padding: 6px 10px;
+        font-size: 16px;
+    }
+
+
+    @include respond(xs) {
+        padding: 6px 8px;
+        font-size: 14px;
+    }
 }
 
 .btn:hover{

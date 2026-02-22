@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     loading?: boolean;
-    children: React.ReactNode;
+    children?: React.ReactNode;
 };
 
 const Button: React.FC<ButtonProps> = ({

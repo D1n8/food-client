@@ -1,7 +1,29 @@
+@import '../../../mixins.scss';
+
 .listPageContainer {
     max-width: 1240px;
     margin: 0 auto;
-} 
+
+    @include respond(xl) {
+        max-width: 1024px;
+    }
+
+    @include respond(lg) {
+        max-width: 768px;
+    }
+
+    @include respond(md) {
+        max-width: 576px;
+    }
+
+    @include respond(sm) {
+        max-width: 375px;
+    }
+
+    @include respond(xs) {
+        max-width: 300px;
+    }
+}
 
 .hero {
     width: 100%;
@@ -10,8 +32,19 @@
     background-repeat: no-repeat;
     background-position: 50% 100%;
     background-size: cover;
-}
 
+    @include respond(xl) {
+        height: 360px;
+    }
+
+    @include respond(md) {
+        height: 300px;
+    }
+
+    @include respond(sm) {
+        height: 200px;
+    }
+}
 
 .subtitle {
     margin-block: 36px 48px;
@@ -22,8 +55,27 @@
     display: grid;
     width: 100%;
     margin-block: 48px;
-    grid-template-columns: repeat(3, 360px);
+    grid-template-columns: repeat(3, 1fr);
     gap: 80px;
+
+    @include respond(xl) {
+        gap: 40px;
+    }
+
+    @include respond(lg) {
+        gap: 20px;
+    }
+
+    @include respond(md) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include respond(sm) {
+        // display: flex;
+        // flex-direction: column;
+        // align-items: center;
+        // gap: 20px;
+    }
 }
 
 .caption {

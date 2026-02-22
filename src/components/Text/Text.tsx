@@ -10,6 +10,7 @@ export type TextProps = {
     children: React.ReactNode;
     color?: 'primary' | 'secondary' | 'accent';
     maxLines?: number;
+    onClick?: () => void;
 };
 
 const Text: React.FC<TextProps> = (props) => {
@@ -17,7 +18,7 @@ const Text: React.FC<TextProps> = (props) => {
     const Tag = props.tag ? props.tag : 'p'
 
     return (
-        <Tag className={
+        <Tag onClick={() => props.onClick && props.onClick()} className={
             classNames(
                 styles.textContainer,
                 props.className,
@@ -27,7 +28,8 @@ const Text: React.FC<TextProps> = (props) => {
                 {
                     fontWeight: props.weight,
                     WebkitLineClamp: props.maxLines
-                }}>{props.children}</Tag>
+                }}
+            >{props.children}</Tag>
     )
 }
 

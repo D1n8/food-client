@@ -3,12 +3,14 @@ import Text from "components/Text";
 import Favorites from "./components/Favorites";
 import User from "./components/User";
 import styles from './Header.module.scss';
+import BurgerMenu from "./components/BurgerMenu";
 import { Link } from "react-router";
 
 function Header() {
     return (
         <header className={styles.header}>
             <div className={styles.headerContainer}>
+                <BurgerMenu />
                 <div className={styles.headerLogo}>
                     <Logo />
                     <Text view="p-20" tag="h1" className={styles.title}>Food Client</Text>
@@ -20,15 +22,19 @@ function Header() {
                         <Text tag="li" view="p-16">
                             <Link className={styles.link} to={'/'}>Recipes</Link>
                         </Text>
+
                         <Text tag="li" view="p-16">
                             <Link className={styles.link} to={'#'}>Meals Categories</Link>
                         </Text>
+
                         <Text tag="li" view="p-16">
                             <Link className={styles.link} to={'#'}>Products</Link>
                         </Text>
+
                         <Text tag="li" view="p-16">
                             <Link className={styles.link} to={'#'}>Menu Items</Link>
                         </Text>
+
                         <Text tag="li" view="p-16">
                             <Link className={styles.link} to={'#'}>Meal Planning</Link>
                         </Text>

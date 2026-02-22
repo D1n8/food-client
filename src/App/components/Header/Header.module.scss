@@ -1,4 +1,4 @@
-@import '../../../variables.scss';
+@import '../../../mixins.scss';
 
 .header {
     position: sticky;
@@ -14,10 +14,25 @@
     padding-inline: 100px;
     gap: 80px;
     align-items: center;
+
+    @include respond(lg) {
+        padding-inline: 20px;
+        gap: 30px;
+    }
+
+    @include respond(md){
+        justify-content: space-between;
+        gap: 0;
+    }
 }
 
-.title{
+.title {
     width: 105px;
+
+    @include respond(lg) {
+        width: 55px;
+
+    }
 }
 
 .nav {
@@ -25,28 +40,43 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    @include respond(md){
+        justify-content: end;
+    }
 }
 
 .headerLogo {
     display: flex;
     align-items: center;
     gap: 20px;
+
+    @include respond(lg) {
+        gap: 10px;
+    }
+
+    @include respond(md){
+        margin-left: 20px;
+    }
 }
 
 .pageLinks {
     display: flex;
     gap: 16px;
+
+    @include respond(md){
+        display: none
+    }
 }
 
-.userInfo{
+.userInfo {
     display: flex;
     align-items: center;
     gap: 16px;
-}
 
-.link{
-    color: black;
-    text-decoration: none;
+    @include respond(lg) {
+        gap: 10px;
+    }
 }
 
 .link:hover{
