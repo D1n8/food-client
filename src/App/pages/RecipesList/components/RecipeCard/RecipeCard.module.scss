@@ -1,0 +1,76 @@
+@import 'styles/mixins.scss';
+
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 578px;
+    border-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+    overflow: hidden;
+
+    @include respond(lg) {
+        height: 440px;
+    }
+
+    @include respond(md) {
+        height: 360px;
+    }
+
+    @include respond(sm) {
+        height: 330px;
+    }
+}
+
+.card:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+img {
+    height: 360px;
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    background-color: #D9D9D9;
+
+    @include respond(lg) {
+        height: 240px;
+    }
+
+    @include respond(md) {
+        height: 180px;
+    }
+}
+
+.cardDescr {
+    flex: 1px;
+    display: flex;
+    padding: 24px 12px;
+    flex-direction: column;
+    justify-content: space-between;
+
+    @include respond(lg) {
+        padding: 16px 8px;
+    }
+}
+
+.textBox {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.captionSlot {
+    display: flex;
+    gap: 5px;
+}
+
+.subtitle {
+    line-height: 1.25;
+}
+
+.bottomContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
