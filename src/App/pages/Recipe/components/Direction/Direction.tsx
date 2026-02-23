@@ -7,7 +7,6 @@ type DirectionProps = {
 }
 
 function Direction({step, text}: DirectionProps) {
-    console.log(text)
     return ( 
         <li className={styles.direction}>
             <Text view='p-16' className={styles.step}>Step {step}</Text>

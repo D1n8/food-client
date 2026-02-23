@@ -1,4 +1,11 @@
-@import '../../../mixins.scss';
+@import 'styles/mixins.scss';
+
+.loaderContainer {
+    display: flex;
+    width: 100%;
+    margin-top: 50px;
+    justify-content: center;
+}
 
 .recipePage {
     width: 1240px;
@@ -50,16 +57,16 @@
     align-items: center;
 
     @include respond(lg) {
-       gap: 80px;
+        gap: 80px;
     }
 
     @include respond(md) {
-       gap: 50px;
+        gap: 50px;
     }
 
     @include respond(sm) {
-       flex-direction: column;
-       gap: 48px;
+        flex-direction: column;
+        gap: 48px;
     }
 }
 
@@ -121,7 +128,7 @@
     }
 }
 
-.ingradients {
+.ingredients {
     flex-basis: 50%;
     border-right: 1px solid $brand;
 
@@ -139,7 +146,7 @@
     }
 }
 
-.ingradientsList {
+.ingredientsList {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     row-gap: 8px;

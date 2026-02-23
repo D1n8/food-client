@@ -1,7 +1,7 @@
 import Logo from "components/Logo";
 import Text from "components/Text";
-import Favorites from "./components/Favorites";
-import User from "./components/User";
+import Favorites from "components/Icons/Favorites";
+import User from "components/Icons/User";
 import styles from './Header.module.scss';
 import BurgerMenu from "./components/BurgerMenu";
 import { Link } from "react-router";

@@ -9,28 +9,39 @@ import Text from 'components/Text';
 import { useNavigate } from 'react-router';
 import MultiDropdown from 'components/MultiDropdown';
 import Input from 'components/Input';
-import SearchIcon from './components/SearchIcon';
+import SearchIcon from 'components/Icons/SearchIcon';
+import { BASE_URL } from '../../consts';
+import Clock from 'components/Icons/Clock';
+import { formatIngredients, formatKcal } from 'utils/utils';
+import { useFetching } from '../../hooks/hooks';
+import Loader from 'components/Loader';
 
 function RecipesList() {
     const [recipes, setRecipes] = useState<IRecipe[]>([])
     const [inputDish, setInputDish] = useState('')
     const navigate = useNavigate()
 
-    useEffect(() => {
-        const fetch = async () => {
-            const data = await axios(
+    const [fetch, isLoading, isError] = useFetching(
+        async () => {
+            const response = await axios(
                 {
                     method: "GET",
-                    url: "https://front-school-strapi.ktsdev.ru/api/recipes",
+                    url: `${BASE_URL}/recipes`,
                     params: {
                         populate: ['images', 'ingradients']
                     },
                     paramsSerializer: params => qs.stringify(params, { arrayFormat: 'indices' })
                 }
             )
-                .then(response => response.data.data)
-            setRecipes(data)
+            if (response.data && response.data.data) {
+                setRecipes(response.data.data)
+            } else {
+                setRecipes([])
+            }
         }
+    )
+
+    useEffect(() => {
         fetch()
     }, [])
 
@@ -55,31 +66,35 @@ function RecipesList() {
                     onChange={() => { }}
                     getTitle={() => 'Categories'} />
 
+                {
+                    isLoading && 
+                    <div className={styles.loaderContainer}>
+                        <Loader size='l'/>
+                    </div>
+                }
+
                 <div className={styles.list}>
                     {
+                        (!isLoading && !isError && recipes.length > 0) &&
                         recipes.map(recipe =>
                             <RecipeCard
                                 key={recipe.id}
                                 image={recipe.images[0].url}
                                 title={recipe.name}
-                                subtitle={recipe.ingradients.reduce((acc, curr, index) => {
-                                    if (index === 0) {
-                                        return acc + curr.name
-                                    }
-                                    return acc + ' + ' + curr.name
-                                }, '')}
+                                subtitle={formatIngredients(recipe.ingradients)}
                                 captionSlot={
-                                    <>
-                                        <svg width="12" height="12" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M10.9318 0.75L12.75 2.56818M10.5682 10.5682L12.0227 12.75M2.56818 0.75L0.75 2.56818M2.93182 10.5682L1.47727 12.75M6.56818 3.65909V6.93182H8.38636M12.0227 6.75C12.0227 9.66207 9.66207 12.0227 6.75 12.0227C3.83795 12.0227 1.47727 9.66207 1.47727 6.75C1.47727 3.83796 3.83795 1.47727 6.75 1.47727C9.66207 1.47727 12.0227 3.83796 12.0227 6.75Z" stroke="#B5460F" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                        {recipe.totalTime} minutes
-                                    </>
+                                    <><Clock />{recipe.totalTime} minutes</>
                                 }
-                                contentSlot={<Text color='accent' view='p-18'>{Math.floor(recipe.calories)} kcal</Text>}
+                                contentSlot={<Text color='accent' view='p-18'>{formatKcal(recipe.calories)} kcal</Text>}
                                 actionSlot={<Button children={'Save'} />}
                                 onClick={() => navigate(`/recipes/${recipe.documentId}`)}
                             />
+                        )
+                    }
+
+                    {
+                        (!isLoading && isError && recipes.length === 0) && (
+                            <Text view="p-18">No recipes found</Text>
                         )
                     }
                 </div>

@@ -1,9 +1,8 @@
-@import '../../../../../mixins.scss';
+@import 'styles/mixins.scss';
 
 .card {
     display: flex;
     flex-direction: column;
-    max-width: 360px;
     height: 578px;
     border-radius: 10px;
     background-color: white;
@@ -20,10 +19,6 @@
 
     @include respond(sm) {
         height: 330px;
-    }
-
-    @include respond(xs) {
-        height: 250px;
     }
 }
 
@@ -44,10 +39,6 @@ img {
 
     @include respond(md) {
         height: 180px;
-    }
-
-    @include respond(xs) {
-        height: 100px;
     }
 }
 
@@ -75,7 +66,6 @@ img {
 }
 
 .subtitle {
-    // margin-bottom: 20px;
     line-height: 1.25;
 }
 

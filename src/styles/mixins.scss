@@ -17,15 +17,3 @@
     @media (max-width: $breakpoint-xl) { @content; }
   }
 }
-
-@mixin mobile-only {
-  @include respond-to(md) {
-    @content;
-  }
-}
-
-@mixin desktop-only {
-  @media (min-width: ($breakpoint-xl + 1)) {
-    @content;
-  }
-}

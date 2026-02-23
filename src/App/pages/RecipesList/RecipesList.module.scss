@@ -1,4 +1,4 @@
-@import '../../../mixins.scss';
+@import 'styles/mixins.scss';
 
 .listPageContainer {
     max-width: 1240px;
@@ -71,11 +71,16 @@
     }
 
     @include respond(sm) {
-        // display: flex;
-        // flex-direction: column;
-        // align-items: center;
-        // gap: 20px;
+        grid-template-columns: 1fr;
+        align-items: center;
     }
+}
+
+.loaderContainer{
+    display: flex;
+    width: 100%;
+    margin-top: 50px;
+    justify-content: center;
 }
 
 .caption {

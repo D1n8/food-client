@@ -8,7 +8,7 @@ type Image = {
     }
 }
 
-type Ingradient = {
+export type Ingredient = {
     id: number,
     name: string,
     amount: number,
@@ -44,7 +44,7 @@ export interface IRecipe {
     name: string,
     summary: string,
     images: Image[],
-    ingradients: Ingradient[]
+    ingradients: Ingredient[]
 }
 
 export interface IFullRecipe extends IRecipe{
@@ -53,7 +53,7 @@ export interface IFullRecipe extends IRecipe{
     rating: number,
     preparationTime: number,
     cookingTime: number,
-    ingradients: Ingradient[],
+    ingradients: Ingredient[],
     equipments: Equipment[],
     directions: Direction[],
     category: Category
