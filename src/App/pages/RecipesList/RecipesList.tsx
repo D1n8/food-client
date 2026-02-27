@@ -3,7 +3,7 @@ import styles from './RecipesList.module.scss';
 import RecipeCard from './components/RecipeCard';
 import Button from 'components/Button';
 import Text from 'components/Text';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import MultiDropdown from 'components/MultiDropdown';
 import Clock from 'components/Icons/Clock';
 import { formatIngredients, formatKcal } from 'utils/utils';
@@ -16,12 +16,13 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 const RecipesList = observer(() => {
     const navigate = useNavigate()
-
+    const [searchParams] = useSearchParams()
     const [store] = useState(() => new RecipeStore());
 
     useEffect(() => {
-        store.getRecipeList()
-    }, [store])
+        const query = searchParams.get('name') || ''
+        store.fetchRecipeList(query)
+    }, [store, searchParams])
 
 
     const isLoading = store.meta === 'loading'
@@ -38,7 +39,7 @@ const RecipesList = observer(() => {
                     view='p-20'
                     tag='h2'>Find the perfect food and <u>drink ideas</u> for every occasion, from <u>weeknight dinners</u> to <u>holiday feasts</u>.</Text>
 
-                <Search store={store} />
+                <Search />
 
                 <MultiDropdown
                     className={styles.multiDropdown}
@@ -62,7 +63,7 @@ const RecipesList = observer(() => {
                             (!isError && recipes.length > 0) &&
                             recipes.map(recipe =>
                                 <RecipeCard
-                                    key={recipe.id}
+                                    key={recipe.documentId}
                                     image={recipe.images[0].url}
                                     title={recipe.name}
                                     subtitle={formatIngredients(recipe.ingredients)}
