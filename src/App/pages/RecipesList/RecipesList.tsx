@@ -12,6 +12,7 @@ import { observer } from 'mobx-react-lite';
 import RecipeStore from 'store/RecipeStore';
 import Search from './components/Search';
 import { toJS } from 'mobx';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const RecipesList = observer(() => {
     const navigate = useNavigate()
@@ -46,30 +47,35 @@ const RecipesList = observer(() => {
                     onChange={() => { }}
                     getTitle={() => 'Categories'} />
 
-                {
-                    isLoading &&
-                    <div className={styles.loaderContainer}>
-                        <Loader size='l' />
-                    </div>
-                }
-
-                <div className={styles.list}>
+                <InfiniteScroll
+                    style={{ overflow: 'visible' }}
+                    dataLength={recipes.length}
+                    next={store.loadMore}
+                    hasMore={store.hasMore}
+                    loader={
+                        <div className={styles.loaderContainer}>
+                            <Loader size='l' />
+                        </div>}
+                >
                     {
-                        (!isLoading && !isError && recipes.length > 0) &&
-                        recipes.map(recipe =>
-                            <RecipeCard
-                                key={recipe.id}
-                                image={recipe.images[0].url}
-                                title={recipe.name}
-                                subtitle={formatIngredients(recipe.ingredients)}
-                                captionSlot={
-                                    <><Clock />{recipe.totalTime} minutes</>
-                                }
-                                contentSlot={<Text color='accent' view='p-18'>{formatKcal(recipe.calories)} kcal</Text>}
-                                actionSlot={<Button children={'Save'} />}
-                                onClick={() => navigate(`/recipes/${recipe.documentId}`)}
-                            />
-                        )
+                        <div className={styles.list}>{
+                            (!isError && recipes.length > 0) &&
+                            recipes.map(recipe =>
+                                <RecipeCard
+                                    key={recipe.id}
+                                    image={recipe.images[0].url}
+                                    title={recipe.name}
+                                    subtitle={formatIngredients(recipe.ingredients)}
+                                    captionSlot={
+                                        <><Clock />{recipe.totalTime} minutes</>
+                                    }
+                                    contentSlot={<Text color='accent' view='p-18'>{formatKcal(recipe.calories)} kcal</Text>}
+                                    actionSlot={<Button children={'Save'} />}
+                                    onClick={() => navigate(`/recipes/${recipe.documentId}`)}
+                                />
+                            )
+                        }
+                        </div>
                     }
 
                     {
@@ -77,7 +83,7 @@ const RecipesList = observer(() => {
                             <Text view="p-18">No recipes found</Text>
                         )
                     }
-                </div>
+                </InfiniteScroll>
             </section>
         </div>
 
