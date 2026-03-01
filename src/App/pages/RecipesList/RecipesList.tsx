@@ -4,7 +4,6 @@ import RecipeCard from './components/RecipeCard';
 import Button from 'components/Button';
 import Text from 'components/Text';
 import { useNavigate, useSearchParams } from 'react-router';
-import MultiDropdown from 'components/MultiDropdown';
 import Clock from 'components/Icons/Clock';
 import { formatIngredients, formatKcal } from 'utils/utils';
 import Loader from 'components/Loader';
@@ -13,21 +12,27 @@ import RecipeStore from 'store/RecipeStore';
 import Search from './components/Search';
 import { toJS } from 'mobx';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import CategoryDropdown from './components/CategoryDropdown';
+
 
 const RecipesList = observer(() => {
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
-    const [store] = useState(() => new RecipeStore());
+    const [store] = useState(() => new RecipeStore())
 
     useEffect(() => {
         const query = searchParams.get('name') || ''
-        store.fetchRecipeList(query)
+        const categoriesParam = searchParams.get('categories')
+        const urlCategories = categoriesParam ? categoriesParam.split(',') : []
+        
+        store.fetchRecipeList(query, urlCategories)
     }, [store, searchParams])
 
 
     const isLoading = store.meta === 'loading'
     const isError = store.meta === 'error'
     const recipes = toJS(store.list)
+
 
     return (
         <div className={styles.listPage}>
@@ -41,12 +46,7 @@ const RecipesList = observer(() => {
 
                 <Search />
 
-                <MultiDropdown
-                    className={styles.multiDropdown}
-                    options={[]}
-                    value={[]}
-                    onChange={() => { }}
-                    getTitle={() => 'Categories'} />
+                <CategoryDropdown />
 
                 <InfiniteScroll
                     style={{ overflow: 'visible' }}

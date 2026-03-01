@@ -12,6 +12,7 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
     onChange,
     disabled,
     getTitle,
+    placeholder
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [filter, setFilter] = useState('');
@@ -47,14 +48,14 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
     }, [options, filter]);
 
     const displayValue = isOpen ? filter : value.length > 0 ? getTitle(value) : '';
-    const placeholder = value.length === 0 ? getTitle(value) : 'Выбрано:';
+    const placeholderValue = isOpen ? (value.length === 0 ? getTitle(value) : 'Selected:') : placeholder;
 
     return (
-        <div className={classNames(styles.multiDropdown, className)} ref={containerRef}>
+        <div className={classNames(styles.multiDropdown, className)} ref={containerRef} onClick={() => setIsOpen(true)}>
             <Input
                 className={styles.multiDropdownInput}
                 value={displayValue}
-                placeholder={placeholder}
+                placeholder={placeholderValue}
                 disabled={disabled}
                 onChange={(val) => {
                     setFilter(val);

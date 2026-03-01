@@ -6,7 +6,7 @@ import { normalizeFullRecipe, normalizeRecipe, type IFullRecipeModel, type IReci
 
 type Meta = 'initial' | 'loading' | 'error' | 'success'
 
-type PrivateFields = '_list' | '_meta' | '_recipe' | '_hasMore'
+type PrivateFields = '_list' | '_meta' | '_recipe' | '_hasMore' | '_selectedCategories'
 
 export default class RecipeStore {
     private _list: IRecipeModel[] = []
@@ -15,7 +15,8 @@ export default class RecipeStore {
     private _recipe: IFullRecipeModel | null = null
     private _page: number = 1
     private _hasMore: boolean = true
-    private readonly _pageSize: number = 6
+    private _pageSize: number = 6
+    private _selectedCategories: string[] = []
 
     constructor() {
         makeObservable<RecipeStore, PrivateFields>(this, {
@@ -23,6 +24,7 @@ export default class RecipeStore {
             _meta: observable,
             _recipe: observable,
             _hasMore: observable,
+            _selectedCategories: observable,
 
             setList: action,
             fetchRecipeList: action,
@@ -58,10 +60,10 @@ export default class RecipeStore {
     }
 
     loadMore = () => {
-        this.fetchRecipeList(this._searchQuery, true)
+        this.fetchRecipeList(this._searchQuery, this._selectedCategories, true)
     }
 
-    async fetchRecipeList(searchQuery: string = '', isLoadMore = false) {
+    async fetchRecipeList(searchQuery: string = '', categories: string[] = [], isLoadMore = false) {
         if (this._meta === 'loading') return
 
         if (!isLoadMore) {
@@ -70,6 +72,7 @@ export default class RecipeStore {
             this._list = []
             this._hasMore = true
             this._searchQuery = searchQuery
+            this._selectedCategories = categories
         }
 
         const queryParams: any = {
@@ -77,16 +80,24 @@ export default class RecipeStore {
             pagination: {
                 page: this._page,
                 pageSize: this._pageSize
-            }
+            },
+            filters: {}
         }
 
         if (this._searchQuery) {
-            queryParams.filters = {
-                name: { $containsi: this._searchQuery }
+            queryParams.filters.name = { $containsi: this._searchQuery }
+        }
+
+        if (this._selectedCategories.length > 0) {
+            queryParams.filters.category = {
+                id: {
+                    $in: this._selectedCategories
+                }
             }
         }
 
         try {
+            console.log(queryParams.filter)
             const response = await axios({
                 method: "GET",
                 url: `${BASE_URL}/recipes`,
@@ -123,63 +134,6 @@ export default class RecipeStore {
             })
         }
     }
-
-    // async searchRecipeList(input: string, isLoadMore = false) {
-    //     if (this._meta === 'loading') return
-
-    //     if (!isLoadMore) {
-    //         this._meta = 'loading'
-    //         this.resetPagination()
-    //     }
-
-    //     try {
-    //         const response = await axios({
-    //             method: "GET",
-    //             url: `${BASE_URL}/recipes`,
-    //             params: {
-    //                 populate: ['images', 'ingradients'],
-    //                 filters: {
-    //                     name: {
-    //                         $containsi: input,
-    //                     },
-    //                 },
-    //                 pagination: {
-    //                     page: this._page,
-    //                     pageSize: this._pageSize
-    //                 }
-    //             },
-    //             paramsSerializer: params => qs.stringify(params, { arrayFormat: 'indices' })
-    //         })
-
-    //         runInAction(() => {
-    //             if (!response.data || !response.data.data) {
-    //                 this._meta = 'error'
-    //                 return
-    //             }
-
-    //             const newRecipes = response.data.data.map((item: IRecipeApi) => normalizeRecipe(item))
-
-    //             if (newRecipes.length < this._pageSize) {
-    //                 this._hasMore = false
-    //             }
-
-    //             this._meta = 'success'
-
-    //             if (isLoadMore) {
-    //                 this._list = [...this._list, ...newRecipes]
-    //             } else {
-    //                 this._list = newRecipes
-    //             }
-
-    //             this._page += 1
-    //         })
-    //     } catch {
-    //         runInAction(() => {
-    //             this._meta = 'error'
-    //             if (!isLoadMore) this._list = []
-    //         })
-    //     }
-    // }
 
     async getFullRecipe(id: string) {
         this._meta = 'loading'

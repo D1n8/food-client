@@ -7,19 +7,23 @@ import { useSearchParams } from 'react-router';
 
 function Search() {
     const [searchParams, setSearchParams] = useSearchParams()
-    const [searchValue, setSearchValue] = useState(searchParams.get('name') || '');
+    const [searchValue, setSearchValue] = useState(searchParams.get('name') || '')
 
-    const handleSearch = () => {
-        if (searchValue.trim()) {
-            setSearchParams({ name: searchValue });
+    const handleSearch = (newValue: string) => {
+        const newParams = new URLSearchParams(searchParams)
+        
+        if (newValue.length === 0) {
+            newParams.delete('name')
         } else {
-            setSearchParams({});
+            newParams.set('name', newValue)
         }
+        
+        setSearchParams(newParams)
     }
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
-            handleSearch()
+            handleSearch(searchValue)
         }
     }
 
@@ -32,7 +36,7 @@ function Search() {
                 onChange={setSearchValue}
                 onKeyDown={handleKeyDown}
                 placeholder='Enter dishes' />
-            <Button onClick={handleSearch}>
+            <Button onClick={() => handleSearch(searchValue)}>
                 <SearchIcon />
             </Button>
         </div>
