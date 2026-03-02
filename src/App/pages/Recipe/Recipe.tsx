@@ -50,9 +50,10 @@ const Recipe = observer(() => {
         return null
     }
 
+    const recipeImage = recipe.images[0].formats.medium ? recipe.images[0].formats.medium.url : recipe.images[0].formats.small.url
+
     return (
         <div className={styles.recipePage}>
-
             <div className={styles.topContainer}>
                 <button className={styles.btn} type="button" onClick={() => navigate(-1)} >
                     <ArrowBack />
@@ -62,7 +63,10 @@ const Recipe = observer(() => {
             </div>
 
             <div className={styles.about}>
-                <img className={styles.aboutImg} src={recipe.images[0].formats.medium.url} alt={recipe.name} />
+                <img
+                    className={styles.aboutImg}
+                    src={recipeImage}
+                    alt={recipe.name} />
 
                 <div className={styles.aboutContent}>
                     <AboutItem name='Perparation' value={`${recipe.preparationTime} minutes`} />

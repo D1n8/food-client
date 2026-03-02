@@ -2,7 +2,10 @@ type Image = {
     id: number,
     url: string,
     formats: {
-        medium: {
+        medium?: {
+            url: string
+        },
+        small: {
             url: string
         }
     }
