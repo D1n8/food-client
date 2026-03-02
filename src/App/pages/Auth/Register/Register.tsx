@@ -4,26 +4,28 @@ import { useState } from 'react';
 import Button from 'components/Button';
 import Text from 'components/Text';
 import { Link } from 'react-router';
+import { userStore } from 'store/UserStore'
 
 function Register() {
     const [email, setEmail] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
-    const submitRegister = () => {
-
+    const submitRegister = (e: React.SubmitEvent) => {
+        e.preventDefault()
+        userStore.registerUser(username, email, password)
     }
 
     return (
         <div className={styles.authPage}>
-            <form action='POST' id='auth-form' className={styles.form} onSubmit={submitRegister}>
+            <form id='auth-form' className={styles.form} onSubmit={(e) => submitRegister(e)}>
                 <Text tag='h3' className={styles.title}>Authorization</Text>
                 <div className={styles.inputContainer}>
                     <label htmlFor="username">Username</label>
                     <Input
                         placeholder='Your username'
                         style={{ width: '100%' }}
-                        name='username'
+                        id='username'
                         value={username}
                         onChange={setUsername}
                         required />
@@ -34,7 +36,7 @@ function Register() {
                     <Input
                         placeholder='Your email'
                         style={{ width: '100%' }}
-                        name='email'
+                        id='email'
                         type='email'
                         value={email}
                         onChange={setEmail}
@@ -46,7 +48,7 @@ function Register() {
                     <Input
                         placeholder='Your password'
                         style={{ width: '100%' }}
-                        name='password'
+                        id='password'
                         type='password'
                         value={password}
                         onChange={setPassword}
@@ -55,7 +57,7 @@ function Register() {
 
                 <div className={styles.bottomContainer}>
                     <Link to={'/login'}>
-                        <Text className={styles.link} onClick={() => { }}>I have an account</Text>
+                        <Text className={styles.link}>I have an account</Text>
                     </Link>
                     <Button type='submit'>Confirm</Button>
                 </div>

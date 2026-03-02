@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './RecipesList.module.scss';
-import RecipeCard from './components/RecipeCard';
+import RecipeCard from '../../../components/RecipeCard';
 import Button from 'components/Button';
 import Text from 'components/Text';
 import { useNavigate, useSearchParams } from 'react-router';
@@ -13,7 +13,7 @@ import Search from './components/Search';
 import { toJS } from 'mobx';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import CategoryDropdown from './components/CategoryDropdown';
-
+import { userStore } from 'store/UserStore';
 
 const RecipesList = observer(() => {
     const navigate = useNavigate()
@@ -24,15 +24,19 @@ const RecipesList = observer(() => {
         const query = searchParams.get('name') || ''
         const categoriesParam = searchParams.get('categories')
         const urlCategories = categoriesParam ? categoriesParam.split(',') : []
-        
+
         store.fetchRecipeList(query, urlCategories)
     }, [store, searchParams])
 
 
+    const addToFavorites = (e: React.MouseEvent<HTMLButtonElement> ,id: number) => {
+        e.stopPropagation()
+        userStore.addToFavorites(id)
+    }
+
     const isLoading = store.meta === 'loading'
     const isError = store.meta === 'error'
     const recipes = toJS(store.list)
-
 
     return (
         <div className={styles.listPage}>
@@ -71,7 +75,7 @@ const RecipesList = observer(() => {
                                         <><Clock />{recipe.totalTime} minutes</>
                                     }
                                     contentSlot={<Text color='accent' view='p-18'>{formatKcal(recipe.calories)} kcal</Text>}
-                                    actionSlot={<Button children={'Save'} />}
+                                    actionSlot={<Button children={'Save'} onClick={(e) => addToFavorites(e, recipe.id)} />}
                                     onClick={() => navigate(`/recipes/${recipe.documentId}`)}
                                 />
                             )

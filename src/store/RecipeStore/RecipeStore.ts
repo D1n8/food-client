@@ -97,7 +97,6 @@ export default class RecipeStore {
         }
 
         try {
-            console.log(queryParams.filter)
             const response = await axios({
                 method: "GET",
                 url: `${BASE_URL}/recipes`,

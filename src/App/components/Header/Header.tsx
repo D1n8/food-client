@@ -41,8 +41,12 @@ function Header() {
                     </ul>
 
                     <div className={styles.userInfo}>
-                        <Favorites />
-                        <User />
+                        <Link to={'/favorites'}>
+                            <Favorites />
+                        </Link>
+                        <Link to={'/register'}>
+                            <User />
+                        </Link>
                     </div>
                 </nav>
             </div>

@@ -114,3 +114,17 @@ export const normalizeFullRecipe = (form: IFullRecipeApi): IFullRecipeModel => (
     directions: form.directions,
     category: form.category
 })
+
+export interface IFavoriteApi {
+    id: number,
+    documentId: string,
+    originalRecipeId: number,
+    recipe: IRecipeApi
+}
+
+export interface IFavoriteModel {
+    id: number,
+    documentId: string,
+    originalRecipeId: number,
+    recipe: IRecipeModel
+}
