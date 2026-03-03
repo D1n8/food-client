@@ -19,6 +19,7 @@ const RecipesList = observer(() => {
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
     const [store] = useState(() => new RecipeStore())
+    const isAuth = userStore.isAuth
 
     useEffect(() => {
         const query = searchParams.get('name') || ''
@@ -29,8 +30,12 @@ const RecipesList = observer(() => {
     }, [store, searchParams])
 
 
-    const addToFavorites = (e: React.MouseEvent<HTMLButtonElement> ,id: number) => {
+    const addToFavorites = (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
         e.stopPropagation()
+        if (!isAuth) {
+            alert('You need to login')
+            return
+        }
         userStore.addToFavorites(id)
     }
 

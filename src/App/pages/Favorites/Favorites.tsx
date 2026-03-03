@@ -16,7 +16,7 @@ const Favorites = observer(() => {
 
     const navigate = useNavigate()
 
-    const removeFromFavorites = (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
+    const removeFromFavorites = (e: React.MouseEvent, id: number) => {
         e.stopPropagation()
         userStore.removeFromFavorites(id)
     }

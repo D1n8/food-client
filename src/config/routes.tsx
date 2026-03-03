@@ -5,6 +5,7 @@ import RecipesList from "../App/pages/RecipesList";
 import Register from "../App/pages/Auth/Register";
 import Login from "../App/pages/Auth/Login";
 import Favorites from "../App/pages/Favorites";
+import Profile from "../App/pages/Profile";
 
 export const routesConfig: RouteObject[] = [
   {
@@ -30,6 +31,10 @@ export const routesConfig: RouteObject[] = [
       {
         path: '/favorites',
         element: <Favorites/>
+      },
+      {
+        path: '/profile',
+        element: <Profile/>
       }
     ]
   }
