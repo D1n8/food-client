@@ -1,32 +1,38 @@
 import { BASE_URL } from "../../App/consts"
 import axios from "axios"
 import { action, computed, makeObservable, observable, runInAction } from "mobx"
+import type { IUser } from "store/models/user"
 
-type PrivateFields = '_isAuth' | '_error' | '_isLoading'
+type PrivateFields = '_isInit' | '_error' | '_isLoading' | '_user'
 
 export default class UserStore {
-    private _isAuth: boolean = Boolean(localStorage.getItem('jwt'))
     private _error: string = ''
     private _isLoading: boolean = false
+    private _isInit: boolean = false
+    private _user: IUser | null = null
 
     constructor() {
         makeObservable<UserStore, PrivateFields>(this, {
-            _isAuth: observable,
             _error: observable,
             _isLoading: observable,
+            _isInit: observable,
+            _user: observable,
 
+            checkAuth: action,
             loginUser: action,
             registerUser: action,
             logoutUser: action,
 
             isAuth: computed,
             error: computed,
-            isLoading: computed
+            isLoading: computed,
+            isInit: computed,
+            user: computed
         })
     }
 
     get isAuth(): boolean {
-        return this._isAuth
+        return Boolean(this._user)
     }
 
     get error(): string {
@@ -37,7 +43,43 @@ export default class UserStore {
         return this._isLoading
     }
 
-    
+    get isInit(): boolean {
+        return this._isInit
+    }
+
+    get user(): IUser | null {
+        return this._user
+    }
+
+    async checkAuth() {
+        const token = localStorage.getItem('jwt')
+
+        if (!token) {
+            runInAction(() => {
+                this._isInit = true
+                this._user = null
+            })
+        }
+
+        try {
+            const response = await axios.get<IUser>(`${BASE_URL}/users/me`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+
+            runInAction(() => {
+                this._user = response.data
+            })
+        } catch (error) {
+            console.error(error)
+            this.logoutUser()
+        } finally {
+            runInAction(() => {
+                this._isInit = true
+            })
+        }
+    }
 
     async loginUser(identifier: string, password: string) {
         this._error = ''
@@ -50,9 +92,9 @@ export default class UserStore {
             })
 
             runInAction(() => {
-                this._isAuth = true
-                this._isLoading = false
+                this._user = response.data.user
                 localStorage.setItem('jwt', response.data.jwt)
+                this._isLoading = false
             })
         } catch (error) {
             runInAction(() => {
@@ -66,7 +108,6 @@ export default class UserStore {
                     this._error = 'An unexpected error occurred'
                 }
                 this._isLoading = false
-                this.logoutUser()
             })
         }
     }
@@ -83,9 +124,9 @@ export default class UserStore {
             })
 
             runInAction(() => {
-                this._isAuth = true
-                this._isLoading = false
+                this._user = response.data
                 localStorage.setItem('jwt', response.data.jwt)
+                this._isLoading = false
             })
         } catch (error) {
             runInAction(() => {
@@ -97,14 +138,13 @@ export default class UserStore {
                     }
                 }
                 this._isLoading = false
-                this.logoutUser()
             })
         }
     }
 
     logoutUser() {
         localStorage.removeItem('jwt')
-        this._isAuth = false
+        this._user = null
     }
 }
 
