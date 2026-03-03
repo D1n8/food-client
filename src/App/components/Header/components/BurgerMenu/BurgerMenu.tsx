@@ -12,32 +12,39 @@ function BurgerMenu() {
         <>
             <BurgerButton onClick={() => setIsOpen(!isOpen)} />
             <nav className={classNames(styles.nav, isOpen && styles.open)}>
-                <ul className={styles.burgerNav}>
-                    <Text onClick={() => setIsOpen(false)} className={styles.link} tag="li" view="p-16">
-                        <Link to={'/'}>Recipes</Link>
-                    </Text>
+                <div className={styles.burgerNav}>
+                    <Link className={styles.link} to={'/'}>
+                        <Text onClick={() => setIsOpen(false)} view="p-16">
+                            Recipes
+                        </Text>
+                    </Link>
 
-                    <Text onClick={() => setIsOpen(false)} className={styles.link} tag="li" view="p-16">
-                        <Link to={'#'}>Meals Categories</Link>
-                    </Text>
+                    <Link className={styles.link} to={'#'}>
+                        <Text onClick={() => setIsOpen(false)} view="p-16">
+                            Meals Categories
+                        </Text>
+                    </Link>
 
-                    <Text onClick={() => setIsOpen(false)} className={styles.link} tag="li" view="p-16">
-                        <Link to={'#'}>Products</Link>
-                    </Text>
+                    <Link className={styles.link} to={'#'}>
+                        <Text onClick={() => setIsOpen(false)} view="p-16">
+                            Products
+                        </Text>
+                    </Link>
 
-                    <Text onClick={() => setIsOpen(false)} className={styles.link} tag="li" view="p-16">
-                        <Link to={'#'}>Menu Items</Link>
-                    </Text>
+                    <Link className={styles.link} to={'#'}>
+                        <Text onClick={() => setIsOpen(false)} view="p-16">
+                            Menu Items
+                        </Text>
+                    </Link>
 
-                    <Text onClick={() => setIsOpen(false)} className={styles.link} tag="li" view="p-16">
-                        <Link to={'#'}>Meal Planning</Link>
-                    </Text>
-                </ul>
+                    <Link className={styles.link} to={'#'}>
+                        <Text onClick={() => setIsOpen(false)} view="p-16">
+                            Meal Planning
+                        </Text>
+                    </Link>
+                </div>
             </nav>
-
-
         </>
-
     );
 }
 
