@@ -5,8 +5,8 @@ import User from "components/Icons/User";
 import styles from './Header.module.scss';
 import BurgerMenu from "./components/BurgerMenu";
 import { Link } from "react-router";
-import { userStore } from 'store/UserStore';
 import { observer } from "mobx-react-lite";
+import { userStore } from "store/UserStore";
 
 const Header = observer(() => {
     return (
@@ -43,10 +43,10 @@ const Header = observer(() => {
                     </ul>
 
                     <div className={styles.userInfo}>
-                        <Link to={userStore.isAuth ? '/favorites' : '/login'}>
+                        <Link to={'/favorites'}>
                             <Favorites />
                         </Link>
-                        <Link to={'/login'}>
+                        <Link to={userStore.isAuth ? '/profile' : '/login'}>
                             <User />
                         </Link>
                     </div>

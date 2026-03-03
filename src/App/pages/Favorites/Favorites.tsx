@@ -1,24 +1,33 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './Favorites.module.scss';
 import { observer } from 'mobx-react-lite';
-import { userStore } from 'store/UserStore';
 import RecipeCard from 'components/RecipeCard';
 import { formatKcal } from 'utils/utils';
 import Clock from 'components/Icons/Clock';
 import Text from 'components/Text';
 import Button from 'components/Button';
 import { useNavigate } from 'react-router';
+import FavoritesStore from 'store/FavoritesStore';
+import Loader from 'components/Loader';
 
 const Favorites = observer(() => {
-    useEffect(() => {
-        userStore.fetchFavorites()
-    }, [])
-
+    const [store] = useState(() => new FavoritesStore())
     const navigate = useNavigate()
+
+    useEffect(() => {
+        store.fetchFavorites()
+    }, [store])
 
     const removeFromFavorites = (e: React.MouseEvent, id: number) => {
         e.stopPropagation()
-        userStore.removeFromFavorites(id)
+        store.removeFromFavorites(id)
+    }
+
+    if (store.isLoading) {
+        return (
+            <div className={styles.loaderContainer}>
+                <Loader size='l' />
+            </div>)
     }
 
     return (
@@ -26,8 +35,8 @@ const Favorites = observer(() => {
             <Text tag='h2'>Your favorites recipes</Text>
             {
                 <div className={styles.list}>{
-                    (userStore.favorites.length > 0) &&
-                    userStore.favorites.map(item => {
+                    (store.favorites.length > 0) &&
+                    store.favorites.map(item => {
                         const recipeId = item.recipe.id
                         const documentId = item.recipe.documentId
 

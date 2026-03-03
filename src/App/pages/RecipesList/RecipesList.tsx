@@ -14,11 +14,13 @@ import { toJS } from 'mobx';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import CategoryDropdown from './components/CategoryDropdown';
 import { userStore } from 'store/UserStore';
+import FavoritesStore from 'store/FavoritesStore';
 
 const RecipesList = observer(() => {
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
-    const [store] = useState(() => new RecipeStore())
+    const [recipeStore] = useState(() => new RecipeStore())
+    const [favoritesStore] = useState(() => new FavoritesStore())
     const isAuth = userStore.isAuth
 
     useEffect(() => {
@@ -26,8 +28,8 @@ const RecipesList = observer(() => {
         const categoriesParam = searchParams.get('categories')
         const urlCategories = categoriesParam ? categoriesParam.split(',') : []
 
-        store.fetchRecipeList(query, urlCategories)
-    }, [store, searchParams])
+        recipeStore.fetchRecipeList(query, urlCategories)
+    }, [recipeStore, searchParams])
 
 
     const addToFavorites = (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
@@ -36,12 +38,12 @@ const RecipesList = observer(() => {
             alert('You need to login')
             return
         }
-        userStore.addToFavorites(id)
+        favoritesStore.addToFavorites(id)
     }
 
-    const isLoading = store.meta === 'loading'
-    const isError = store.meta === 'error'
-    const recipes = toJS(store.list)
+    const isLoading = recipeStore.meta === 'loading'
+    const isError = recipeStore.meta === 'error'
+    const recipes = toJS(recipeStore.list)
 
     return (
         <div className={styles.listPage}>
@@ -60,8 +62,8 @@ const RecipesList = observer(() => {
                 <InfiniteScroll
                     style={{ overflow: 'visible' }}
                     dataLength={recipes.length}
-                    next={store.loadMore}
-                    hasMore={store.hasMore}
+                    next={recipeStore.loadMore}
+                    hasMore={recipeStore.hasMore}
                     loader={
                         <div className={styles.loaderContainer}>
                             <Loader size='l' />

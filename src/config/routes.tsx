@@ -6,6 +6,7 @@ import Register from "../App/pages/Auth/Register";
 import Login from "../App/pages/Auth/Login";
 import Favorites from "../App/pages/Favorites";
 import Profile from "../App/pages/Profile";
+import RequireAuth from "components/RequireAuth";
 
 export const routesConfig: RouteObject[] = [
   {
@@ -24,17 +25,23 @@ export const routesConfig: RouteObject[] = [
         path: '/register',
         element: <Register />
       },
-      { 
+      {
         path: '/login',
-        element: <Login/>
+        element: <Login />
       },
+
       {
-        path: '/favorites',
-        element: <Favorites/>
-      },
-      {
-        path: '/profile',
-        element: <Profile/>
+        element: <RequireAuth />,
+        children: [
+          {
+            path: '/favorites',
+            element: <Favorites />
+          },
+          {
+            path: '/profile',
+            element: <Profile />
+          }
+        ]
       }
     ]
   }
