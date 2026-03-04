@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styles from './RecipesList.module.scss';
 import RecipeCard from '../../../components/RecipeCard';
 import Button from 'components/Button';
@@ -8,42 +8,47 @@ import Clock from 'components/Icons/Clock';
 import { formatIngredients, formatKcal } from 'utils/utils';
 import Loader from 'components/Loader';
 import { observer } from 'mobx-react-lite';
-import RecipeStore from 'store/RecipeStore';
+import RecipeListStore from 'store/RecipeListStore';
 import Search from './components/Search';
 import { toJS } from 'mobx';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import CategoryDropdown from './components/CategoryDropdown';
 import { userStore } from 'store/UserStore';
 import FavoritesStore from 'store/FavoritesStore';
+import { routes } from 'config/routes';
 
 const RecipesList = observer(() => {
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
-    const [recipeStore] = useState(() => new RecipeStore())
+    const [recipeListStore] = useState(() => new RecipeListStore())
     const [favoritesStore] = useState(() => new FavoritesStore())
-    const isAuth = userStore.isAuth
+    const { isAuth } = userStore
 
     useEffect(() => {
         const query = searchParams.get('name') || ''
         const categoriesParam = searchParams.get('categories')
         const urlCategories = categoriesParam ? categoriesParam.split(',') : []
 
-        recipeStore.fetchRecipeList(query, urlCategories)
-    }, [recipeStore, searchParams])
+        recipeListStore.fetchRecipeList(query, urlCategories)
+    }, [recipeListStore, searchParams])
 
 
-    const addToFavorites = (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
+    const addToFavorites = useCallback((e: React.MouseEvent<HTMLButtonElement>, id: number) => {
         e.stopPropagation()
         if (!isAuth) {
             alert('You need to login')
             return
         }
         favoritesStore.addToFavorites(id)
-    }
+    }, [isAuth, favoritesStore])
 
-    const isLoading = recipeStore.meta === 'loading'
-    const isError = recipeStore.meta === 'error'
-    const recipes = toJS(recipeStore.list)
+    const handleClick = useCallback((id: string) => {
+        navigate(routes.recipe.create(id))
+    }, [navigate])
+
+    const isLoading = recipeListStore.meta === 'loading'
+    const isError = recipeListStore.meta === 'error'
+    const recipes = toJS(recipeListStore.list)
 
     return (
         <div className={styles.listPage}>
@@ -62,8 +67,8 @@ const RecipesList = observer(() => {
                 <InfiniteScroll
                     style={{ overflow: 'visible' }}
                     dataLength={recipes.length}
-                    next={recipeStore.loadMore}
-                    hasMore={recipeStore.hasMore}
+                    next={recipeListStore.loadMore}
+                    hasMore={recipeListStore.hasMore}
                     loader={
                         <div className={styles.loaderContainer}>
                             <Loader size='l' />
@@ -83,7 +88,7 @@ const RecipesList = observer(() => {
                                     }
                                     contentSlot={<Text color='accent' view='p-18'>{formatKcal(recipe.calories)} kcal</Text>}
                                     actionSlot={<Button children={'Save'} onClick={(e) => addToFavorites(e, recipe.id)} />}
-                                    onClick={() => navigate(`/recipes/${recipe.documentId}`)}
+                                    onClick={() => handleClick(recipe.documentId)}
                                 />
                             )
                         }

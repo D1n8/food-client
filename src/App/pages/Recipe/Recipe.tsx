@@ -1,5 +1,5 @@
 import styles from './Recipe.module.scss'
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import Text from "components/Text";
 import parse from 'html-react-parser';
@@ -21,11 +21,15 @@ const Recipe = observer(() => {
 
     useEffect(() => {
         if (id) {
-            store.getFullRecipe(id)
+            store.getRecipe(id)
         }
 
         return () => store.clearRecipe()
-    }, [id])
+    }, [id, store])
+
+    const handleBack = useCallback(() => {
+        navigate(-1)
+    }, [navigate])
 
     const isLoading = store.meta === 'loading'
     const isError = store.meta === 'error'
@@ -53,7 +57,7 @@ const Recipe = observer(() => {
     return (
         <div className={styles.recipePage}>
             <div className={styles.topContainer}>
-                <button className={styles.btn} type="button" onClick={() => navigate(-1)} >
+                <button className={styles.btn} type="button" onClick={handleBack} >
                     <ArrowBack />
                 </button>
 

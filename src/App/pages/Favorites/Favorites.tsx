@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styles from './Favorites.module.scss';
 import { observer } from 'mobx-react-lite';
 import RecipeCard from 'components/RecipeCard';
@@ -9,6 +9,7 @@ import Button from 'components/Button';
 import { useNavigate } from 'react-router';
 import FavoritesStore from 'store/FavoritesStore';
 import Loader from 'components/Loader';
+import { routes } from 'config/routes';
 
 const Favorites = observer(() => {
     const [store] = useState(() => new FavoritesStore())
@@ -18,10 +19,14 @@ const Favorites = observer(() => {
         store.fetchFavorites()
     }, [store])
 
-    const removeFromFavorites = (e: React.MouseEvent, id: number) => {
+    const removeFromFavorites = useCallback((e: React.MouseEvent, id: number) => {
         e.stopPropagation()
         store.removeFromFavorites(id)
-    }
+    }, [store])
+
+    const handleClick = useCallback((id: string) => {
+        navigate(routes.recipe.create(id))
+    }, [navigate])
 
     if (store.isLoading) {
         return (
@@ -51,7 +56,7 @@ const Favorites = observer(() => {
                                 }
                                 contentSlot={<Text color='accent' view='p-18'>{formatKcal(item.recipe.calories)} kcal</Text>}
                                 actionSlot={<Button children={'Unsave'} onClick={(e) => removeFromFavorites(e, recipeId)} />}
-                                onClick={() => navigate(`/recipes/${documentId}`)}
+                                onClick={() => handleClick(documentId)}
                             />
                         )
                     }

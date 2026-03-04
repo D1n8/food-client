@@ -1,43 +1,28 @@
 import Input from 'components/Input';
 import styles from '../Auth.module.scss'
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import Button from 'components/Button';
 import Text from 'components/Text';
-import { Link, useNavigate } from 'react-router';
-import { userStore } from 'store/UserStore'
+import { Link } from 'react-router';
+import { userStore } from 'store/UserStore';
+import { routes } from 'config/routes';
+import { withAuthProtected } from '../withAuthProtected';
 import { observer } from 'mobx-react-lite';
-import Loader from 'components/Loader';
 
-const Register = observer(() => {
+const Register = withAuthProtected(observer(() => {
     const [email, setEmail] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const isAuth = userStore.isAuth
+    const { error } = userStore
 
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        if (isAuth) {
-            navigate('/profile')
-        }
-    }, [isAuth, navigate])
-
-    const submitRegister = (e: React.SubmitEvent) => {
+    const submitRegister = useCallback((e: React.SubmitEvent) => {
         e.preventDefault()
         userStore.registerUser(username, email, password)
-    }
-
-    if (userStore.isLoading) {
-        return (
-            <div className={styles.loaderContainer}>
-                <Loader size='l' />
-            </div>
-        )
-    }
+    }, [username, email, password])
 
     return (
         <div className={styles.authPage}>
-            <form id='auth-form' className={styles.form} onSubmit={(e) => submitRegister(e)}>
+            <form id='auth-form' className={styles.form} onSubmit={submitRegister}>
                 <Text tag='h3' className={styles.title}>Authorization</Text>
 
                 <div className={styles.inputContainer}>
@@ -76,18 +61,18 @@ const Register = observer(() => {
                 </div>
 
                 <div className={styles.bottomContainer}>
-                    <Link to={'/login'}>
+                    <Link to={routes.login.mask}>
                         <Text className={styles.link}>I have an account</Text>
                     </Link>
                     <Button type='submit'>Confirm</Button>
                 </div>
 
-                {userStore.error && (
-                    <Text view='p-16' className={styles.error}>{userStore.error}</Text>
+                {error && (
+                    <Text view='p-16' className={styles.error}>{error}</Text>
                 )}
             </form>
         </div>
     );
-})
+}))
 
 export default Register;

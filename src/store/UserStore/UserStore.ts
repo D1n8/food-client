@@ -59,6 +59,7 @@ export default class UserStore {
                 this._isInit = true
                 this._user = null
             })
+            return
         }
 
         try {
@@ -124,7 +125,7 @@ export default class UserStore {
             })
 
             runInAction(() => {
-                this._user = response.data
+                this._user = response.data.user
                 localStorage.setItem('jwt', response.data.jwt)
                 this._isLoading = false
             })

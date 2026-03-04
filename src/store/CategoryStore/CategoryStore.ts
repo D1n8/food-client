@@ -1,19 +1,20 @@
 import { BASE_URL } from "../../App/consts";
 import axios from "axios";
-import { computed, makeObservable, observable, runInAction } from "mobx";
+import { action, computed, makeObservable, observable, runInAction } from "mobx";
 import type { Category } from "store/models/recipe";
+import { Meta } from "shared";
 
-type Meta = 'initial' | 'loading' | 'error' | 'success'
 type PrivateFields = '_list' | '_meta'
 
 export default class CategoryStore {
     private _list: Category[] = []
-    private _meta: Meta = 'initial'
+    private _meta: Meta = Meta.Initial
 
     constructor() {
         makeObservable<CategoryStore, PrivateFields>(this, {
             _list: observable,
             _meta: observable,
+            fetchCategoryList: action,
             list: computed,
             meta: computed
         })
@@ -28,7 +29,7 @@ export default class CategoryStore {
     }
 
     async fetchCategoryList() {
-        this._meta = 'loading'
+        this._meta = Meta.Loading
         try {
             const response = await axios({
                 method: "GET",
@@ -37,15 +38,15 @@ export default class CategoryStore {
 
             runInAction(() => {
                 if (!response.data || !response.data.data) {
-                    this._meta = 'error'
+                    this._meta = Meta.Error
                     return
                 }
 
                 this._list = [...response.data.data]
-                this._meta = 'success'
+                this._meta = Meta.Success
             })
         } catch {
-            this._meta = 'error'
+            this._meta = Meta.Error
         }
     }
 }

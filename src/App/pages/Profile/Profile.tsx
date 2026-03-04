@@ -3,14 +3,18 @@ import Text from 'components/Text'
 import styles from './Profile.module.scss'
 import { userStore } from 'store/UserStore'
 import { observer } from 'mobx-react-lite'
+import { useCallback } from 'react'
 
 const Profile = observer(() => {
+    const handleLogout = useCallback(() => {
+        userStore.logoutUser()
+    }, [])
 
     return (
         <div className={styles.profilePage}>
             <div className={styles.topContainer}>
                 <Text tag='h2'>Profile</Text>
-                <Button onClick={() => userStore.logoutUser()}>Logout</Button>
+                <Button onClick={handleLogout}>Logout</Button>
             </div>
 
             <div className={styles.textContainer}>

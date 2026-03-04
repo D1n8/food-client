@@ -1,4 +1,4 @@
-import type { RouteObject } from "react-router";
+import { Navigate, type RouteObject } from "react-router";
 import App from "../App";
 import Recipe from "../App/pages/Recipe";
 import RecipesList from "../App/pages/RecipesList";
@@ -7,10 +7,11 @@ import Login from "../App/pages/Auth/Login";
 import Favorites from "../App/pages/Favorites";
 import Profile from "../App/pages/Profile";
 import RequireAuth from "components/RequireAuth";
+import { routes } from './routes'
 
 export const routesConfig: RouteObject[] = [
   {
-    path: '/',
+    path: routes.main.mask,
     element: <App />,
     children: [
       {
@@ -18,15 +19,15 @@ export const routesConfig: RouteObject[] = [
         element: <RecipesList />
       },
       {
-        path: '/recipes/:id',
+        path: routes.recipe.mask,
         element: <Recipe />
       },
       {
-        path: '/register',
+        path: routes.register.mask,
         element: <Register />
       },
       {
-        path: '/login',
+        path: routes.login.mask,
         element: <Login />
       },
 
@@ -34,14 +35,18 @@ export const routesConfig: RouteObject[] = [
         element: <RequireAuth />,
         children: [
           {
-            path: '/favorites',
+            path: routes.favorites.mask,
             element: <Favorites />
           },
           {
-            path: '/profile',
+            path: routes.profile.mask,
             element: <Profile />
           }
         ]
+      },
+      {
+        path: "*",
+        element: <Navigate to={routes.main.mask} replace />,
       }
     ]
   }
