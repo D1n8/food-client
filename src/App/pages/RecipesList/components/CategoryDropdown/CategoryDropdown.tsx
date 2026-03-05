@@ -10,6 +10,7 @@ import { observer } from "mobx-react-lite";
 const CategoryDropdown = observer(() => {
     const [store] = useState(() => new CategoryStore())
     const [searchParams, setSearchParams] = useSearchParams()
+    const [localSelected, setLocalSelected] = useState<Option[]>([])
 
     useEffect(() => {
         store.fetchCategoryList()
@@ -19,20 +20,25 @@ const CategoryDropdown = observer(() => {
         () => store.list.map(item => ({ key: item.id.toString(), value: item.title })),
         [store.list])
 
-    const selectedValues = useMemo(() => {
+    useEffect(() => {
         const param = searchParams.get('categories')
         const ids = param ? param.split(',') : []
 
-        return categoryOptions.filter(opt => ids.includes(opt.key))
+        const optionsFromUrl = categoryOptions.filter(opt => ids.includes(opt.key))
+        setLocalSelected(optionsFromUrl)
     }, [searchParams, categoryOptions])
 
     const handleChange = (newValues: Option[]) => {
+        setLocalSelected(newValues)
+    }
+
+   const handleApply = () => {
         const newParams = new URLSearchParams(searchParams)
         
-        if (newValues.length === 0) {
+        if (localSelected.length === 0) {
             newParams.delete('categories')
         } else {
-            const ids = newValues.map(v => v.key).join(',')
+            const ids = localSelected.map(v => v.key).join(',')
             newParams.set('categories', ids)
         }
         
@@ -40,7 +46,7 @@ const CategoryDropdown = observer(() => {
     }
 
     const handleGetTitle = (value: Option[]) => {
-       return formatSeletedCategories(value)
+        return formatSeletedCategories(value)
     }
 
     return (
@@ -48,9 +54,10 @@ const CategoryDropdown = observer(() => {
             <MultiDropdown
                 className={styles.multiDropdown}
                 options={categoryOptions}
-                value={selectedValues}
+                value={localSelected}
                 onChange={handleChange}
                 getTitle={handleGetTitle}
+                action={handleApply}
                 placeholder="Categories" />
         </>
     );

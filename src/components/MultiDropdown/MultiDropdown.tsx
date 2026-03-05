@@ -4,6 +4,7 @@ import styles from './MultiDropdown.module.scss';
 import ArrowDownIcon from '../Icons/ArrowDownIcon';
 import classNames from 'classnames';
 import type { MultiDropdownProps, Option } from './types/types';
+import Button from 'components/Button';
 
 const MultiDropdown: React.FC<MultiDropdownProps> = ({
     className,
@@ -12,7 +13,8 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
     onChange,
     disabled,
     getTitle,
-    placeholder
+    placeholder,
+    action
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [filter, setFilter] = useState('');
@@ -47,6 +49,12 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
         );
     }, [options, filter]);
 
+    const handleClick = (e: React.MouseEvent) => {
+        e.stopPropagation()
+        setIsOpen(false)
+        action()
+    }
+
     const displayValue = isOpen ? filter : value.length > 0 ? getTitle(value) : '';
     const placeholderValue = isOpen ? (value.length === 0 ? getTitle(value) : 'Selected:') : placeholder;
 
@@ -62,28 +70,33 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
                     setIsOpen(true);
                 }}
                 afterSlot={
-                    <ArrowDownIcon color='secondary'/>
+                    <ArrowDownIcon color='secondary' />
                 }
             />
 
             {isOpen && !disabled && (
-                <div className={styles.multiDropdownOptions}>
-                    {filteredOptions.length > 0 ? (
-                        filteredOptions.map((opt) => {
-                            const isSelected = value.some((v) => v.key === opt.key);
-                            return (
-                                <div
-                                    key={opt.key}
-                                    className={classNames(styles.multiDropdownOption, isSelected && styles.selected)}
-                                    onClick={() => handleOptionClick(opt)}
-                                >
-                                    {opt.value}
-                                </div>
-                            );
-                        })
-                    ) : (
-                        <div className={styles.multiDropdownOption}>Nothing found</div>
-                    )}
+                <div className={styles.box}>
+
+                    <div className={styles.multiDropdownOptions}>
+                        {filteredOptions.length > 0 ? (
+                            filteredOptions.map((opt) => {
+                                const isSelected = value.some((v) => v.key === opt.key);
+                                return (
+                                    <div
+                                        key={opt.key}
+                                        className={classNames(styles.multiDropdownOption, isSelected && styles.selected)}
+                                        onClick={() => handleOptionClick(opt)}
+                                    >
+                                        {opt.value}
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            <div className={styles.multiDropdownOption}>Nothing found</div>
+                        )}
+                    </div>
+
+                    <Button onClick={handleClick} style={{ justifyContent: 'center' }}>Aplly</Button>
                 </div>
             )}
         </div>

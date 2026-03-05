@@ -19,4 +19,5 @@ export type MultiDropdownProps = {
   /** Возвращает строку которая будет выводится в инпуте. В случае если опции не выбраны, строка должна отображаться как placeholder. */
   getTitle: (value: Option[]) => string;
   placeholder: string;
+  action: () => void; 
 };
