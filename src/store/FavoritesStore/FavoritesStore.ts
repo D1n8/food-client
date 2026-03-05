@@ -2,6 +2,7 @@ import { BASE_URL } from "../../App/consts"
 import axios from "axios"
 import { action, computed, makeObservable, observable, runInAction } from "mobx"
 import qs from "qs"
+import { LocalStorageItem } from "shared"
 import { type IFavoriteModel, type IFavoriteApi, normalizeRecipe } from "store/models/recipe"
 
 type PrivateFields = '_favorites' | '_isLoading'
@@ -36,7 +37,7 @@ export default class FavoritesStore {
             const response = await axios.get<IFavoriteApi[]>(`${BASE_URL}/favorites`,
                 {
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+                        'Authorization': `Bearer ${localStorage.getItem(LocalStorageItem.JWT)}`
                     },
                     params: {
                         populate: ['images', 'ingradients'],
@@ -67,7 +68,7 @@ export default class FavoritesStore {
         try {
             await axios.post(`${BASE_URL}/favorites/add`,
                 { recipe: id },
-                { headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` } }
+                { headers: { 'Authorization': `Bearer ${localStorage.getItem(LocalStorageItem.JWT)}` } }
             )
 
             await this.fetchFavorites()
@@ -82,7 +83,7 @@ export default class FavoritesStore {
         try {
             await axios.post(`${BASE_URL}/favorites/remove`,
                 { recipe: id },
-                { headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` } }
+                { headers: { 'Authorization': `Bearer ${localStorage.getItem(LocalStorageItem.JWT)}` } }
             )
 
             await this.fetchFavorites()

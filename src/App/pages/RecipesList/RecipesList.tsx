@@ -30,21 +30,32 @@ const RecipesList = observer(() => {
         const urlCategories = categoriesParam ? categoriesParam.split(',') : []
 
         recipeListStore.fetchRecipeList(query, urlCategories)
-    }, [recipeListStore, searchParams])
 
-
-    const addToFavorites = useCallback((e: React.MouseEvent<HTMLButtonElement>, id: number) => {
-        e.stopPropagation()
-        if (!isAuth) {
-            alert('You need to login')
-            return
+        if (isAuth) {
+            favoritesStore.fetchFavorites()
         }
-        favoritesStore.addToFavorites(id)
-    }, [isAuth, favoritesStore])
+    }, [recipeListStore, searchParams, isAuth, favoritesStore])
+
+    const favoritesRecipesDocIds = new Set(favoritesStore.favorites.map(item => item.recipe.documentId))
 
     const handleClick = useCallback((id: string) => {
         navigate(routes.recipe.create(id))
     }, [navigate])
+
+    const handleFavoriteClick = (e: React.MouseEvent, docId: string, actionId: number) => {
+        e.stopPropagation()
+
+        if (!isAuth) {
+            navigate(routes.login.mask)
+            return
+        }
+
+        if (favoritesRecipesDocIds.has(docId)) {
+            favoritesStore.removeFromFavorites(actionId)
+        } else{ 
+            favoritesStore.addToFavorites(actionId)
+        }
+    }
 
     const isLoading = recipeListStore.meta === 'loading'
     const isError = recipeListStore.meta === 'error'
@@ -77,8 +88,10 @@ const RecipesList = observer(() => {
                     {
                         <div className={styles.list}>{
                             (!isError && recipes.length > 0) &&
-                            recipes.map(recipe =>
-                                <RecipeCard
+                            recipes.map(recipe => {
+                                const isFavorite = favoritesRecipesDocIds.has(recipe.documentId)
+
+                                return (<RecipeCard
                                     key={recipe.documentId}
                                     image={recipe.images[0].url}
                                     title={recipe.name}
@@ -87,10 +100,11 @@ const RecipesList = observer(() => {
                                         <><Clock />{recipe.totalTime} minutes</>
                                     }
                                     contentSlot={<Text color='accent' view='p-18'>{formatKcal(recipe.calories)} kcal</Text>}
-                                    actionSlot={<Button children={'Save'} onClick={(e) => addToFavorites(e, recipe.id)} />}
+                                    actionSlot={<Button children={isFavorite ? 'Unsave' : 'Save'} onClick={(e) => handleFavoriteClick(e, recipe.documentId, recipe.id)} />}
                                     onClick={() => handleClick(recipe.documentId)}
                                 />
-                            )
+                                )
+                            })
                         }
                         </div>
                     }

@@ -1,6 +1,7 @@
 import { BASE_URL } from "../../App/consts"
 import axios from "axios"
 import { action, computed, makeObservable, observable, runInAction } from "mobx"
+import { LocalStorageItem } from "shared"
 import type { IUser } from "store/models/user"
 
 type PrivateFields = '_isInit' | '_error' | '_isLoading' | '_user'
@@ -52,7 +53,7 @@ export default class UserStore {
     }
 
     async checkAuth() {
-        const token = localStorage.getItem('jwt')
+        const token = localStorage.getItem(LocalStorageItem.JWT)
 
         if (!token) {
             runInAction(() => {
@@ -94,7 +95,7 @@ export default class UserStore {
 
             runInAction(() => {
                 this._user = response.data.user
-                localStorage.setItem('jwt', response.data.jwt)
+                localStorage.setItem(LocalStorageItem.JWT, response.data.jwt)
                 this._isLoading = false
             })
         } catch (error) {
@@ -126,7 +127,7 @@ export default class UserStore {
 
             runInAction(() => {
                 this._user = response.data.user
-                localStorage.setItem('jwt', response.data.jwt)
+                localStorage.setItem(LocalStorageItem.JWT, response.data.jwt)
                 this._isLoading = false
             })
         } catch (error) {
@@ -144,7 +145,7 @@ export default class UserStore {
     }
 
     logoutUser() {
-        localStorage.removeItem('jwt')
+        localStorage.removeItem(LocalStorageItem.JWT)
         this._user = null
     }
 }
