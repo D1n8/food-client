@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import BurgerButton from '../BurgerButton';
 import styles from './BurgerMenu.module.scss'
 import Text from 'components/Text';
@@ -7,37 +7,23 @@ import classNames from 'classnames';
 
 function BurgerMenu() {
     const [isOpen, setIsOpen] = useState(false)
+    const handleOpen = useCallback(() => {
+        setIsOpen(false)
+    }, [])
 
     return (
         <>
             <BurgerButton onClick={() => setIsOpen(!isOpen)} />
             <nav className={classNames(styles.nav, isOpen && styles.open)}>
-                <ul className={styles.burgerNav}>
-                    <Text onClick={() => setIsOpen(false)} className={styles.link} tag="li" view="p-16">
-                        <Link to={'/'}>Recipes</Link>
-                    </Text>
-
-                    <Text onClick={() => setIsOpen(false)} className={styles.link} tag="li" view="p-16">
-                        <Link to={'#'}>Meals Categories</Link>
-                    </Text>
-
-                    <Text onClick={() => setIsOpen(false)} className={styles.link} tag="li" view="p-16">
-                        <Link to={'#'}>Products</Link>
-                    </Text>
-
-                    <Text onClick={() => setIsOpen(false)} className={styles.link} tag="li" view="p-16">
-                        <Link to={'#'}>Menu Items</Link>
-                    </Text>
-
-                    <Text onClick={() => setIsOpen(false)} className={styles.link} tag="li" view="p-16">
-                        <Link to={'#'}>Meal Planning</Link>
-                    </Text>
-                </ul>
+                <div className={styles.burgerNav}>
+                    <Link className={styles.link} to={'/'}>
+                        <Text onClick={handleOpen} view="p-16">
+                            Recipes
+                        </Text>
+                    </Link>
+                </div>
             </nav>
-
-
         </>
-
     );
 }
 

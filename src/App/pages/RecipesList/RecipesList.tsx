@@ -1,107 +1,122 @@
-import { useEffect, useState } from 'react';
-import type { IRecipe } from 'App/types/types';
+import { useCallback, useEffect, useState } from 'react';
 import styles from './RecipesList.module.scss';
-import axios from 'axios';
-import qs from 'qs';
-import RecipeCard from './components/RecipeCard';
+import RecipeCard from '../../../components/RecipeCard';
 import Button from 'components/Button';
 import Text from 'components/Text';
-import { useNavigate } from 'react-router';
-import MultiDropdown from 'components/MultiDropdown';
-import Input from 'components/Input';
-import SearchIcon from 'components/Icons/SearchIcon';
-import { BASE_URL } from '../../consts';
+import { useNavigate, useSearchParams } from 'react-router';
 import Clock from 'components/Icons/Clock';
 import { formatIngredients, formatKcal } from 'utils/utils';
-import { useFetching } from '../../hooks/hooks';
 import Loader from 'components/Loader';
+import { observer } from 'mobx-react-lite';
+import RecipeListStore from 'store/RecipeListStore';
+import Search from './components/Search';
+import { toJS } from 'mobx';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import CategoryDropdown from './components/CategoryDropdown';
+import { userStore } from 'store/UserStore';
+import FavoritesStore from 'store/FavoritesStore';
+import { routes } from 'config/routes';
 
-function RecipesList() {
-    const [recipes, setRecipes] = useState<IRecipe[]>([])
-    const [inputDish, setInputDish] = useState('')
+const RecipesList = observer(() => {
     const navigate = useNavigate()
-
-    const [fetch, isLoading, isError] = useFetching(
-        async () => {
-            const response = await axios(
-                {
-                    method: "GET",
-                    url: `${BASE_URL}/recipes`,
-                    params: {
-                        populate: ['images', 'ingradients']
-                    },
-                    paramsSerializer: params => qs.stringify(params, { arrayFormat: 'indices' })
-                }
-            )
-            if (response.data && response.data.data) {
-                setRecipes(response.data.data)
-            } else {
-                setRecipes([])
-            }
-        }
-    )
+    const [searchParams] = useSearchParams()
+    const [recipeListStore] = useState(() => new RecipeListStore())
+    const [favoritesStore] = useState(() => new FavoritesStore())
+    const { isAuth } = userStore
 
     useEffect(() => {
-        fetch()
-    }, [])
+        const query = searchParams.get('name') || ''
+        const categoriesParam = searchParams.get('categories')
+        const urlCategories = categoriesParam ? categoriesParam.split(',') : []
+
+        recipeListStore.fetchRecipeList(query, urlCategories)
+
+        if (isAuth) {
+            favoritesStore.fetchFavorites()
+        }
+    }, [recipeListStore, searchParams, isAuth, favoritesStore])
+
+    const handleCardClick = useCallback((id: string) => {
+        navigate(routes.recipe.create(id))
+    }, [navigate])
+
+    const handleFavoriteClick = useCallback((e: React.MouseEvent, docId: string, actionId: number) => {
+        e.stopPropagation()
+
+        if (!isAuth) {
+            navigate(routes.login.mask)
+            return
+        }
+
+        if (favoritesStore.favoritesDocIds.has(docId)) {
+            favoritesStore.removeFromFavorites(actionId)
+        } else{ 
+            favoritesStore.addToFavorites(actionId)
+        }
+    }, [favoritesStore, isAuth, navigate])
+
+    const isLoading = recipeListStore.meta === 'loading'
+    const isError = recipeListStore.meta === 'error'
+    const recipes = toJS(recipeListStore.list)
 
     return (
         <div className={styles.listPage}>
             <div className={styles.hero}></div>
 
             <section className={styles.listPageContainer}>
-                <Text className={styles.subtitle} view='p-20' tag='h2'>Find the perfect food and <u>drink ideas</u> for every occasion, from <u>weeknight dinners</u> to <u>holiday feasts</u>.</Text>
+                <Text
+                    className={styles.subtitle}
+                    view='p-20'
+                    tag='h2'>Find the perfect food and <u>drink ideas</u> for every occasion, from <u>weeknight dinners</u> to <u>holiday feasts</u>.</Text>
 
-                <div className={styles.inputContainer}>
-                    <Input style={{ width: '100%' }} className={styles.input} value={inputDish} onChange={(value) => setInputDish(value)} placeholder='Enter dishes' />
-                    <Button>
-                        <SearchIcon />
-                    </Button>
-                </div>
+                <Search />
 
-                <MultiDropdown
-                    className={styles.multiDropdown}
-                    options={[]}
-                    value={[]}
-                    onChange={() => { }}
-                    getTitle={() => 'Categories'} />
+                <CategoryDropdown />
 
-                {
-                    isLoading && 
-                    <div className={styles.loaderContainer}>
-                        <Loader size='l'/>
-                    </div>
-                }
-
-                <div className={styles.list}>
+                <InfiniteScroll
+                    style={{ overflow: 'visible' }}
+                    dataLength={recipes.length}
+                    next={recipeListStore.loadMore}
+                    hasMore={recipeListStore.hasMore}
+                    loader={
+                        <div className={styles.loaderContainer}>
+                            <Loader size='l' />
+                        </div>}
+                >
                     {
-                        (!isLoading && !isError && recipes.length > 0) &&
-                        recipes.map(recipe =>
-                            <RecipeCard
-                                key={recipe.id}
-                                image={recipe.images[0].url}
-                                title={recipe.name}
-                                subtitle={formatIngredients(recipe.ingradients)}
-                                captionSlot={
-                                    <><Clock />{recipe.totalTime} minutes</>
-                                }
-                                contentSlot={<Text color='accent' view='p-18'>{formatKcal(recipe.calories)} kcal</Text>}
-                                actionSlot={<Button children={'Save'} />}
-                                onClick={() => navigate(`/recipes/${recipe.documentId}`)}
-                            />
-                        )
+                        <div className={styles.list}>{
+                            (!isError && recipes.length > 0) &&
+                            recipes.map(recipe => {
+                                const isFavorite = favoritesStore.favoritesDocIds.has(recipe.documentId)
+
+                                return (<RecipeCard
+                                    key={recipe.documentId}
+                                    image={recipe.images[0].url}
+                                    title={recipe.name}
+                                    subtitle={formatIngredients(recipe.ingredients)}
+                                    captionSlot={
+                                        <><Clock />{recipe.totalTime} minutes</>
+                                    }
+                                    contentSlot={<Text color='accent' view='p-18'>{formatKcal(recipe.calories)} kcal</Text>}
+                                    actionSlot={<Button children={isFavorite ? 'Unsave' : 'Save'} onClick={(e) => handleFavoriteClick(e, recipe.documentId, recipe.id)} />}
+                                    onClick={() => handleCardClick(recipe.documentId)}
+                                />
+                                )
+                            })
+                        }
+                        </div>
                     }
 
                     {
-                        (!isLoading && isError && recipes.length === 0) && (
+                        (!isLoading && recipes.length === 0) && (
                             <Text view="p-18">No recipes found</Text>
                         )
                     }
-                </div>
+                </InfiniteScroll>
             </section>
         </div>
 
     );
-}
+})
 
 export default RecipesList;

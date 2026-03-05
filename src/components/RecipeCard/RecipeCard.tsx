@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Text from 'components/Text'
 import styles from './RecipeCard.module.scss'
 import classNames from 'classnames';
@@ -41,4 +41,4 @@ const RecipeCard: React.FC<CardProps> = (props) => {
         </article>)
 };
 
-export default RecipeCard;
+export default memo(RecipeCard);

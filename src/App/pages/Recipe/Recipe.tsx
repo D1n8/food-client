@@ -1,9 +1,6 @@
-import axios from "axios";
 import styles from './Recipe.module.scss'
-import { useEffect, useState } from "react";
-import type { IFullRecipe } from "App/types/types";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import qs from "qs";
 import Text from "components/Text";
 import parse from 'html-react-parser';
 import Ingredient from "./components/Ingredient";
@@ -11,32 +8,32 @@ import Equipment from "./components/Equipment";
 import Direction from "./components/Direction";
 import ArrowBack from "components/Icons/ArrowBack";
 import AboutItem from "./components/AboutItem";
-import { BASE_URL } from "../../consts";
-import { useFetching } from "../../hooks/hooks";
 import Loader from "components/Loader";
+import RecipeStore from "store/RecipeStore";
+import { observer } from 'mobx-react-lite';
+import { toJS } from 'mobx';
 
-function Recipe() {
+const Recipe = observer(() => {
     const { id } = useParams()
     const navigate = useNavigate()
-    const [recipe, setRecipe] = useState<IFullRecipe | null>(null)
-    const [fetch, isLoading, isError] = useFetching(
-        async (id: string | undefined) => {
-            const data = await axios({
-                method: "GET",
-                url: `${BASE_URL}/recipes/${id}`,
-                params: {
-                    populate: ['ingradients', 'equipments', 'directions.image', 'images', 'category']
-                },
-                paramsSerializer: params => qs.stringify(params, { arrayFormat: 'indices' })
-            })
-                .then(response => response.data.data)
-            setRecipe(data)
-        }
-    )
+
+    const [store] = useState(() => new RecipeStore())
 
     useEffect(() => {
-        fetch(id)
-    }, [])
+        if (id) {
+            store.getRecipe(id)
+        }
+
+        return () => store.clearRecipe()
+    }, [id, store])
+
+    const handleBack = useCallback(() => {
+        navigate(-1)
+    }, [navigate])
+
+    const isLoading = store.meta === 'loading'
+    const isError = store.meta === 'error'
+    const recipe = store.recipe ? toJS(store.recipe) : null
 
     if (isLoading) {
         return (
@@ -59,9 +56,8 @@ function Recipe() {
 
     return (
         <div className={styles.recipePage}>
-
             <div className={styles.topContainer}>
-                <button className={styles.btn} type="button" onClick={() => navigate(-1)} >
+                <button className={styles.btn} type="button" onClick={handleBack} >
                     <ArrowBack />
                 </button>
 
@@ -69,7 +65,10 @@ function Recipe() {
             </div>
 
             <div className={styles.about}>
-                <img className={styles.aboutImg} src={recipe.images[0].formats.medium.url} alt={recipe.name} />
+                <img
+                    className={styles.aboutImg}
+                    src={recipe.images[0].url}
+                    alt={recipe.name} />
 
                 <div className={styles.aboutContent}>
                     <AboutItem name='Perparation' value={`${recipe.preparationTime} minutes`} />
@@ -89,7 +88,7 @@ function Recipe() {
                     <Text tag="h3" view='p-20' className={styles.subtitle}>Ingredients</Text>
                     <ul className={styles.ingredientsList}>
                         {
-                            recipe.ingradients.map(ingredient =>
+                            recipe.ingredients.map(ingredient =>
                                 <Ingredient key={ingredient.id} {...ingredient} />
                             )
                         }
@@ -120,6 +119,6 @@ function Recipe() {
             </div>
         </div>
     );
-}
+})
 
 export default Recipe;

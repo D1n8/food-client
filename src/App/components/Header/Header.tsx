@@ -5,8 +5,10 @@ import User from "components/Icons/User";
 import styles from './Header.module.scss';
 import BurgerMenu from "./components/BurgerMenu";
 import { Link } from "react-router";
+import { observer } from "mobx-react-lite";
+import { userStore } from "store/UserStore";
 
-function Header() {
+const Header = observer(() => {
     return (
         <header className={styles.header}>
             <div className={styles.headerContainer}>
@@ -22,32 +24,20 @@ function Header() {
                         <Text tag="li" view="p-16">
                             <Link className={styles.link} to={'/'}>Recipes</Link>
                         </Text>
-
-                        <Text tag="li" view="p-16">
-                            <Link className={styles.link} to={'#'}>Meals Categories</Link>
-                        </Text>
-
-                        <Text tag="li" view="p-16">
-                            <Link className={styles.link} to={'#'}>Products</Link>
-                        </Text>
-
-                        <Text tag="li" view="p-16">
-                            <Link className={styles.link} to={'#'}>Menu Items</Link>
-                        </Text>
-
-                        <Text tag="li" view="p-16">
-                            <Link className={styles.link} to={'#'}>Meal Planning</Link>
-                        </Text>
                     </ul>
 
                     <div className={styles.userInfo}>
-                        <Favorites />
-                        <User />
+                        <Link to={'/favorites'}>
+                            <Favorites />
+                        </Link>
+                        <Link to={userStore.isAuth ? '/profile' : '/login'}>
+                            <User />
+                        </Link>
                     </div>
                 </nav>
             </div>
 
         </header>);
-}
+})
 
 export default Header;
