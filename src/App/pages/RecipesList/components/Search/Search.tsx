@@ -9,7 +9,8 @@ function Search() {
     const [searchParams, setSearchParams] = useSearchParams()
     const [searchValue, setSearchValue] = useState(searchParams.get('name') || '')
 
-    const handleSearch = (newValue: string) => {
+    const handleSearch = (e: React.MouseEvent | React.KeyboardEvent, newValue: string) => {
+        e.preventDefault()
         const newParams = new URLSearchParams(searchParams)
         
         if (newValue.length === 0) {
@@ -23,7 +24,7 @@ function Search() {
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
-            handleSearch(searchValue)
+            handleSearch(e, searchValue)
         }
     }
 
@@ -36,7 +37,7 @@ function Search() {
                 onChange={setSearchValue}
                 onKeyDown={handleKeyDown}
                 placeholder='Enter dishes' />
-            <Button onClick={() => handleSearch(searchValue)}>
+            <Button onClick={(e) => handleSearch(e, searchValue)}>
                 <SearchIcon />
             </Button>
         </div>

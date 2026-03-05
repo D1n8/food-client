@@ -36,13 +36,11 @@ const RecipesList = observer(() => {
         }
     }, [recipeListStore, searchParams, isAuth, favoritesStore])
 
-    const favoritesRecipesDocIds = new Set(favoritesStore.favorites.map(item => item.recipe.documentId))
-
-    const handleClick = useCallback((id: string) => {
+    const handleCardClick = useCallback((id: string) => {
         navigate(routes.recipe.create(id))
     }, [navigate])
 
-    const handleFavoriteClick = (e: React.MouseEvent, docId: string, actionId: number) => {
+    const handleFavoriteClick = useCallback((e: React.MouseEvent, docId: string, actionId: number) => {
         e.stopPropagation()
 
         if (!isAuth) {
@@ -50,12 +48,12 @@ const RecipesList = observer(() => {
             return
         }
 
-        if (favoritesRecipesDocIds.has(docId)) {
+        if (favoritesStore.favoritesDocIds.has(docId)) {
             favoritesStore.removeFromFavorites(actionId)
         } else{ 
             favoritesStore.addToFavorites(actionId)
         }
-    }
+    }, [favoritesStore, isAuth, navigate])
 
     const isLoading = recipeListStore.meta === 'loading'
     const isError = recipeListStore.meta === 'error'
@@ -89,7 +87,7 @@ const RecipesList = observer(() => {
                         <div className={styles.list}>{
                             (!isError && recipes.length > 0) &&
                             recipes.map(recipe => {
-                                const isFavorite = favoritesRecipesDocIds.has(recipe.documentId)
+                                const isFavorite = favoritesStore.favoritesDocIds.has(recipe.documentId)
 
                                 return (<RecipeCard
                                     key={recipe.documentId}
@@ -101,7 +99,7 @@ const RecipesList = observer(() => {
                                     }
                                     contentSlot={<Text color='accent' view='p-18'>{formatKcal(recipe.calories)} kcal</Text>}
                                     actionSlot={<Button children={isFavorite ? 'Unsave' : 'Save'} onClick={(e) => handleFavoriteClick(e, recipe.documentId, recipe.id)} />}
-                                    onClick={() => handleClick(recipe.documentId)}
+                                    onClick={() => handleCardClick(recipe.documentId)}
                                 />
                                 )
                             })

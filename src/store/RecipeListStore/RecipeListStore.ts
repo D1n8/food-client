@@ -23,7 +23,6 @@ export default class RecipeStore {
             _hasMore: observable,
             _selectedCategories: observable,
 
-            setList: action,
             fetchRecipeList: action,
             loadMore: action,
 
@@ -45,10 +44,6 @@ export default class RecipeStore {
         return this._hasMore
     }
 
-    setList(list: IRecipeApi[]) {
-        this._list = list.map((item) => normalizeRecipe(item))
-    }
-
     loadMore = () => {
         this.fetchRecipeList(this._searchQuery, this._selectedCategories, true)
     }
@@ -59,7 +54,6 @@ export default class RecipeStore {
         if (!isLoadMore) {
             this._meta = Meta.Loading
             this._page = 1
-            this._list = []
             this._hasMore = true
             this._searchQuery = searchQuery
             this._selectedCategories = categories

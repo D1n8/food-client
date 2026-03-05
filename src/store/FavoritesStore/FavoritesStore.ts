@@ -19,7 +19,8 @@ export default class FavoritesStore {
             addToFavorites: action,
             removeFromFavorites: action,
             favorites: computed,
-            isLoading: computed
+            isLoading: computed,
+            favoritesDocIds: computed
         })
     }
 
@@ -29,6 +30,10 @@ export default class FavoritesStore {
 
     get isLoading(): boolean {
         return this._isLoading
+    }
+
+    get favoritesDocIds(): Set<string> {
+        return new Set(this._favorites.map(item => item.recipe.documentId))
     }
 
     async fetchFavorites() {
