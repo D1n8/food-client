@@ -19,17 +19,18 @@ import CaptionSlot from 'components/CaptionSlot';
 import SortDropdown from './components/SortDropdown';
 import { useRecipeParams } from './hooks/useRecipeParams';
 import ScrollToTop from 'components/ScrollToTop';
+import VegetarianCheckbox from './components/VegetarianCheckbox';
 
 const RecipesList = observer(() => {
     const navigate = useNavigate()
     const [recipeListStore] = useState(() => new RecipeListStore())
     const [favoritesStore] = useState(() => new FavoritesStore())
     const { isAuth } = userStore
-    const { query, sort, categories, listKey }  = useRecipeParams()
+    const { query, sort, isVegetarian, categories, listKey } = useRecipeParams()
 
     useEffect(() => {
-        recipeListStore.fetchRecipeList(query, categories, sort)
-    }, [recipeListStore, query, sort, categories])
+        recipeListStore.fetchRecipeList(query, categories, sort, isVegetarian)
+    }, [recipeListStore, query, sort, categories, isVegetarian])
 
     useEffect(() => {
         if (isAuth) {
@@ -63,7 +64,7 @@ const RecipesList = observer(() => {
     return (
         <div className={styles.listPage}>
             <div className={styles.hero}></div>
-
+            
             <section className={styles.listPageContainer}>
                 <Text
                     className={styles.subtitle}
@@ -72,11 +73,12 @@ const RecipesList = observer(() => {
 
                 <Search />
                 <div className={styles.filtersContainer}>
-                    <SortDropdown />
+                    <div className={styles.filtersBox}>
+                        <SortDropdown />
+                        <VegetarianCheckbox />
+                    </div>
                     <CategoryDropdown />
                 </div>
-
-                <ScrollToTop/>
 
                 <InfiniteScroll
                     key={listKey}
@@ -117,6 +119,8 @@ const RecipesList = observer(() => {
                         )
                     }
                 </InfiniteScroll>
+
+                <ScrollToTop />
             </section>
         </div>
 

@@ -11,6 +11,7 @@ export default class RecipeStore {
     private _list: IRecipeModel[] = []
     private _meta: Meta = Meta.Initial
     private _searchQuery: string = ''
+    private _isVegetarian: boolean = false
     private _sort: string = ''
     private _page: number = 1
     private _hasMore: boolean = true
@@ -46,10 +47,10 @@ export default class RecipeStore {
     }
 
     loadMore = () => {
-        this.fetchRecipeList(this._searchQuery, this._selectedCategories, this._sort, true)
+        this.fetchRecipeList(this._searchQuery, this._selectedCategories, this._sort, this._isVegetarian, true)
     }
 
-    async fetchRecipeList(searchQuery: string = '', categories: string[] = [], sort: string = '', isLoadMore = false) {
+    async fetchRecipeList(searchQuery: string = '', categories: string[] = [], sort: string = '', isVegetarian: boolean = false, isLoadMore = false) {
         if (this._meta === 'loading') return
 
         if (!isLoadMore) {
@@ -59,6 +60,7 @@ export default class RecipeStore {
             this._searchQuery = searchQuery
             this._selectedCategories = categories
             this._sort = sort
+            this._isVegetarian = isVegetarian
         }
 
         const queryParams: any = {
@@ -80,6 +82,12 @@ export default class RecipeStore {
                 id: {
                     $in: this._selectedCategories
                 }
+            }
+        }
+
+        if (this._isVegetarian) {
+            queryParams.filters.vegetarian = {
+                $eq: 'true'
             }
         }
 

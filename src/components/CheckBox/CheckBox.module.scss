@@ -1,0 +1,46 @@
+@import 'styles/variables.scss';
+
+.checkboxContainer {
+    position: relative;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.checkboxInput {
+    margin: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    cursor: pointer;
+}
+
+.checkboxInput{
+    border: 1px solid $secondary;
+}
+
+.checkboxContainer:not(.disabled):hover .checkboxInput {
+    border: 1px solid $brand;
+}
+
+.checked{
+    border: 1px solid $brand;
+}
+
+.checkboxIcon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    border: 1px solid white;
+}

@@ -9,12 +9,14 @@ export const useRecipeParams = () => {
         const sort = searchParams.get('sort-by') || '';
         const categoriesStr = searchParams.get('categories');
         const categories = categoriesStr ? categoriesStr.split(',') : [];
+        const isVegetarian = Boolean(searchParams.get('vegetarian'))
 
         return {
             query,
+            isVegetarian,
             sort,
             categories,
-            listKey: `${query}-${sort}-${categoriesStr}` 
+            listKey: `${query}-${sort}-${isVegetarian}-${categoriesStr}` 
         };
     }, [searchParams]);
 };
