@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import styles from './RecipesList.module.scss';
-import RecipeCard from '../../../components/RecipeCard';
+import RecipeCard from 'components/RecipeCard';
 import Button from 'components/Button';
 import Text from 'components/Text';
 import { useNavigate } from 'react-router';
@@ -15,7 +15,7 @@ import CategoryDropdown from './components/CategoryDropdown';
 import { userStore } from 'store/UserStore';
 import FavoritesStore from 'store/FavoritesStore';
 import { routes } from 'config/routes';
-import CaptionSlot from './components/CaptionSlot';
+import CaptionSlot from 'components/CaptionSlot';
 import SortDropdown from './components/SortDropdown';
 import { useRecipeParams } from './hooks/useRecipeParams';
 import ScrollToTop from 'components/ScrollToTop';

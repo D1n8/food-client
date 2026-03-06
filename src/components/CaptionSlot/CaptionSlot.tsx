@@ -1,6 +1,6 @@
 import Clock from 'components/Icons/Clock';
 import Text from 'components/Text'
-import styles from '../../RecipesList.module.scss'
+import styles from './CaptionSlot.module.scss'
 import Star from 'components/Icons/Star';
 import { memo } from 'react';
 
