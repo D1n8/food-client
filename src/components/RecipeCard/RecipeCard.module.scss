@@ -62,7 +62,8 @@ img {
 
 .captionSlot {
     display: flex;
-    gap: 5px;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .subtitle {

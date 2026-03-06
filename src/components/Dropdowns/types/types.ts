@@ -1,9 +1,20 @@
+import type { SortKey } from "App/pages/RecipesList/components/SortDropdown/const";
+
 export type Option = {
   /** Ключ варианта, используется для отправки на бек/использования в коде */
   key: string;
   /** Значение варианта, отображается пользователю */
   value: string;
 };
+
+export type DropdownProps = {
+  /**Передаем выбранное значение*/
+  getTitle: (key: any) => string;
+  options: Option[],
+  /**Ключ выбранного значения*/
+  selectedKey: string,
+  onSelect: (value: SortKey) => void
+}
 
 /** Пропсы, которые принимает компонент Dropdown */
 export type MultiDropdownProps = {
@@ -19,5 +30,5 @@ export type MultiDropdownProps = {
   /** Возвращает строку которая будет выводится в инпуте. В случае если опции не выбраны, строка должна отображаться как placeholder. */
   getTitle: (value: Option[]) => string;
   placeholder: string;
-  action: () => void; 
+  action: () => void;
 };

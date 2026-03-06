@@ -11,6 +11,7 @@ export default class RecipeStore {
     private _list: IRecipeModel[] = []
     private _meta: Meta = Meta.Initial
     private _searchQuery: string = ''
+    private _sort: string = ''
     private _page: number = 1
     private _hasMore: boolean = true
     private _pageSize: number = 6
@@ -45,10 +46,10 @@ export default class RecipeStore {
     }
 
     loadMore = () => {
-        this.fetchRecipeList(this._searchQuery, this._selectedCategories, true)
+        this.fetchRecipeList(this._searchQuery, this._selectedCategories, this._sort, true)
     }
 
-    async fetchRecipeList(searchQuery: string = '', categories: string[] = [], isLoadMore = false) {
+    async fetchRecipeList(searchQuery: string = '', categories: string[] = [], sort: string = '', isLoadMore = false) {
         if (this._meta === 'loading') return
 
         if (!isLoadMore) {
@@ -57,6 +58,7 @@ export default class RecipeStore {
             this._hasMore = true
             this._searchQuery = searchQuery
             this._selectedCategories = categories
+            this._sort = sort
         }
 
         const queryParams: any = {
@@ -65,7 +67,8 @@ export default class RecipeStore {
                 page: this._page,
                 pageSize: this._pageSize
             },
-            filters: {}
+            filters: {},
+            sort: ''
         }
 
         if (this._searchQuery) {
@@ -78,6 +81,10 @@ export default class RecipeStore {
                     $in: this._selectedCategories
                 }
             }
+        }
+
+        if (this._sort) {
+            queryParams.sort = this._sort
         }
 
         try {
