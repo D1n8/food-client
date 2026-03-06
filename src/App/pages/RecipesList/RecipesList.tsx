@@ -18,6 +18,7 @@ import { routes } from 'config/routes';
 import CaptionSlot from './components/CaptionSlot';
 import SortDropdown from './components/SortDropdown';
 import { useRecipeParams } from './hooks/useRecipeParams';
+import ScrollToTop from 'components/ScrollToTop';
 
 const RecipesList = observer(() => {
     const navigate = useNavigate()
@@ -74,6 +75,8 @@ const RecipesList = observer(() => {
                     <SortDropdown />
                     <CategoryDropdown />
                 </div>
+
+                <ScrollToTop/>
 
                 <InfiniteScroll
                     key={listKey}
