@@ -5,9 +5,10 @@
     flex-direction: column;
     height: 578px;
     border-radius: 10px;
-    background-color: white;
+    background-color: var(--color-white);
     cursor: pointer;
     overflow: hidden;
+    transition: background-color 0.3s ease-in-out;
 
     @include respond(lg) {
         height: 440px;
@@ -23,7 +24,7 @@
 }
 
 .card:hover {
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: var(--color-hover);
 }
 
 img {
@@ -31,7 +32,7 @@ img {
     width: 100%;
     display: block;
     object-fit: cover;
-    background-color: #D9D9D9;
+    background-color: var(--color-disabled);
 
     @include respond(lg) {
         height: 240px;

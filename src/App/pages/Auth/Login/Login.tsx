@@ -22,10 +22,10 @@ const Login = withAuthProtected(observer(() => {
     return (
         <div className={styles.authPage}>
             <form id='login-form' className={styles.form} onSubmit={submitLogin}>
-                <Text tag='h3' className={styles.title}>Login</Text>
+                <Text tag='h3' color='primary' className={styles.title}>Login</Text>
 
                 <div className={styles.inputContainer}>
-                    <label htmlFor="identifier">Email or Username</label>
+                    <label className={styles.label} htmlFor="identifier">Email or Username</label>
                     <Input
                         id='identifier'
                         style={{ width: '100%' }}
@@ -36,7 +36,7 @@ const Login = withAuthProtected(observer(() => {
                 </div>
 
                 <div className={styles.inputContainer}>
-                    <label htmlFor="loginPassword">Password</label>
+                    <label className={styles.label} htmlFor="loginPassword">Password</label>
                     <Input
                         id='loginPassword'
                         style={{ width: '100%' }}

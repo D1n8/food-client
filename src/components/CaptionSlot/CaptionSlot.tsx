@@ -18,7 +18,7 @@ const CaptionSlot = memo(({totalTime, rating}: CaptionSlot) => {
             </div>
             <div className={styles.rating}>
                 <Star />
-                <Text view='p-16'>{rating}</Text>
+                <Text color='secondary' view='p-16'>{rating}</Text>
             </div>
         </>
     );

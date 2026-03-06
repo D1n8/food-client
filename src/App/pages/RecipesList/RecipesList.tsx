@@ -69,6 +69,7 @@ const RecipesList = observer(() => {
                 <Text
                     className={styles.subtitle}
                     view='p-20'
+                    color='primary'
                     tag='h2'>Find the perfect food and <u>drink ideas</u> for every occasion, from <u>weeknight dinners</u> to <u>holiday feasts</u>.</Text>
 
                 <Search />
@@ -115,7 +116,7 @@ const RecipesList = observer(() => {
 
                     {
                         (!isLoading && recipes.length === 0) && (
-                            <Text view="p-18">No recipes found</Text>
+                            <Text color='primary' view="p-18">No recipes found</Text>
                         )
                     }
                 </InfiniteScroll>

@@ -12,7 +12,7 @@ function Ingredient({ name, amount, unit }: IngredientProp) {
     return (
         <li className={styles.ingredient}>
             <IngredientIcon/>
-            <Text view='p-16'>{amount} {unit} {name}</Text>
+            <Text view='p-16' color='primary'>{amount} {unit} {name}</Text>
         </li>
     );
 }

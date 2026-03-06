@@ -1,6 +1,6 @@
 @import 'styles/mixins.scss';
 
-.btn{
+.btn {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -9,9 +9,10 @@
     border-radius: 10px;
     font-size: 18px;
     line-height: 1;
-    color: rgba(255, 255, 255, 1);
-    background-color: $brand;
+    color: white;
+    background-color: var(--color-brand);
     cursor: pointer;
+    transition: all 0.3s ease-in-out;
 
     @include respond(lg) {
         padding: 12px 15px;
@@ -24,19 +25,19 @@
     }
 }
 
-.btn:hover{
-    background-color: $brand-hover;
+.btn:hover {
+    background-color: var(--color-brand-hover);
 }
 
-.btn:active{
-    background-color: $brand-active;
+.btn:active {
+    background-color: var(--color-brand-active);
 }
 
-.btn:disabled{
-    background-color: $disabled;
+.btn:disabled {
+    background-color: var(--color-disabled);
 }
 
-.btn .loader{
-    border-color: white;
+.btn .loader {
+    border-color: var(--color-white);
     border-right-color: transparent;
 }

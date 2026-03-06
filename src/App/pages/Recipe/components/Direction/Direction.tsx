@@ -9,8 +9,8 @@ type DirectionProps = {
 function Direction({step, text}: DirectionProps) {
     return ( 
         <li className={styles.direction}>
-            <Text view='p-16' className={styles.step}>Step {step}</Text>
-            <Text view='p-14' className={styles.text}>{text}</Text>
+            <Text view='p-16' color='primary' className={styles.step}>Step {step}</Text>
+            <Text view='p-14' color='primary' className={styles.text}>{text}</Text>
         </li>
      );
 }

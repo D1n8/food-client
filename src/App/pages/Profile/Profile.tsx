@@ -13,13 +13,13 @@ const Profile = observer(() => {
     return (
         <div className={styles.profilePage}>
             <div className={styles.topContainer}>
-                <Text tag='h2'>Profile</Text>
+                <Text tag='h2' color='primary'>Profile</Text>
                 <Button onClick={handleLogout}>Logout</Button>
             </div>
 
             <div className={styles.textContainer}>
-                <Text view='p-18'>Username: {userStore.user?.username}</Text>
-                <Text view='p-18'>Email: {userStore.user?.email}</Text>
+                <Text view='p-18' color='primary'>Username: {userStore.user?.username}</Text>
+                <Text view='p-18' color='primary'>Email: {userStore.user?.email}</Text>
             </div>
         </div>
     );

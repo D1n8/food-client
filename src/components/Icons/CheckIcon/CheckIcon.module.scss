@@ -5,7 +5,7 @@
 }
 
 .primary path{
-    stroke: $brand;
+    stroke: var(--color-brand);
 }
 
 .accent path{

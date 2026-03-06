@@ -23,10 +23,10 @@ const Register = withAuthProtected(observer(() => {
     return (
         <div className={styles.authPage}>
             <form id='auth-form' className={styles.form} onSubmit={submitRegister}>
-                <Text tag='h3' className={styles.title}>Authorization</Text>
+                <Text tag='h3' color='primary' className={styles.title}>Authorization</Text>
 
                 <div className={styles.inputContainer}>
-                    <label htmlFor="username">Username</label>
+                    <label className={styles.label} htmlFor="username">Username</label>
                     <Input
                         placeholder='Your username'
                         style={{ width: '100%' }}
@@ -37,7 +37,7 @@ const Register = withAuthProtected(observer(() => {
                 </div>
 
                 <div className={styles.inputContainer}>
-                    <label htmlFor="email">Email</label>
+                    <label className={styles.label} htmlFor="email">Email</label>
                     <Input
                         placeholder='Your email'
                         style={{ width: '100%' }}

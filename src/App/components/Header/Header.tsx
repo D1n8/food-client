@@ -7,6 +7,7 @@ import BurgerMenu from "./components/BurgerMenu";
 import { Link } from "react-router";
 import { observer } from "mobx-react-lite";
 import { userStore } from "store/UserStore";
+import ThemeSwitcher from "./components/ThemeSwitcher";
 
 const Header = observer(() => {
     return (
@@ -33,6 +34,7 @@ const Header = observer(() => {
                         <Link to={userStore.isAuth ? '/profile' : '/login'}>
                             <User />
                         </Link>
+                        <ThemeSwitcher/>
                     </div>
                 </nav>
             </div>

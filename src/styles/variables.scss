@@ -1,10 +1,29 @@
-$brand: #B5460F;
-$brand-hover: rgba(181, 70, 15, 0.7);
-$brand-active: #872D01;
-$disabled: #D9D9D9;
-$secondary: rgba(175, 173, 181, 1);
 $breakpoint-xs: 375px;
 $breakpoint-sm: 576px;
 $breakpoint-md: 768px;
 $breakpoint-lg: 1024px;
 $breakpoint-xl: 1240px;
+
+:root {
+    --color-brand: #B5460F;
+    --color-brand-hover: rgba(181, 70, 15, 0.7);
+    --color-brand-active: #872D01;
+    --color-disabled: #D9D9D9;
+    --color-secondary: rgba(175, 173, 181, 1);
+    --color-bg-brand: rgba(255, 192, 118, 0.23);
+    --color-white: #ffffff;
+    --color-text: black;
+    --color-hover: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme='dark'] {
+    --color-brand: #B5460F;
+    --color-brand-hover: rgba(181, 70, 15, 0.7);
+    --color-brand-active: #872D01;
+    --color-disabled: #444444;
+    --color-secondary: rgba(175, 173, 181, 1);
+    --color-bg-brand: #1C1713;
+    --color-white: #332c26;
+    --color-text: rgb(235, 235, 235);
+    --color-hover: rgba(255, 255, 255, 0.2);
+}
