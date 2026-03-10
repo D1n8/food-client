@@ -132,7 +132,7 @@
 
 .ingredients {
     flex-basis: 50%;
-    border-right: 1px solid $brand;
+    border-right: 1px solid var(--color-brand);
 
     @include respond(lg) {
         border: none;

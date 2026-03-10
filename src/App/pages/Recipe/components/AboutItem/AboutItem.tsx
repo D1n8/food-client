@@ -9,7 +9,7 @@ type AboutItemProps = {
 function AboutItem({name, value}: AboutItemProps) {
     return ( 
         <div className={styles.aboutItem}>
-            <Text view='p-16'>{name}</Text>
+            <Text view='p-16' color='primary'>{name}</Text>
             <Text view='p-16' className={styles.value} color='accent'>{value}</Text>
         </div>
      );

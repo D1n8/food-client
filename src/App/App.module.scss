@@ -1,5 +1,7 @@
+@import 'styles/variables.scss';
+
 a{
-    color: black;
+    color: var(--color-text);
     text-decoration: none;
 }
 

@@ -10,7 +10,7 @@ function Equipment({ name }: EquipmentProp) {
     return (
         <li className={styles.equipment}>
             <EquipmentIcon/>
-            <Text view='p-16'>{name}</Text>
+            <Text view='p-16' color='primary'>{name}</Text>
         </li>
     );
 }

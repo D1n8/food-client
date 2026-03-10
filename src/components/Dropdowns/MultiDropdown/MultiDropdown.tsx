@@ -1,9 +1,9 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
-import Input from '../Input';
+import Input from '../../Input';
 import styles from './MultiDropdown.module.scss';
-import ArrowDownIcon from '../Icons/ArrowDownIcon';
+import ArrowDownIcon from '../../Icons/ArrowDownIcon';
 import classNames from 'classnames';
-import type { MultiDropdownProps, Option } from './types/types';
+import type { MultiDropdownProps, Option } from '../types/types';
 import Button from 'components/Button';
 
 const MultiDropdown: React.FC<MultiDropdownProps> = ({
@@ -28,7 +28,7 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
         };
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
+    }, [])
 
     useEffect(() => {
         if (!isOpen) setFilter('');

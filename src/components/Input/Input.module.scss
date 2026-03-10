@@ -12,18 +12,20 @@
     border-radius: 10px;
     font-size: 16px;
     line-height: 1.25;
+    background-color: var(--color-white);
+    color: var(--color-text);
 }
 
 .input:disabled {
-    background-color: white;
+    background-color: var(--color-white);
 }
 
 .input::placeholder {
-    color: #AFADB5;
+    color: var(--color-secondary);
 }
 
 .input:focus {
-    outline: 1px solid $brand;
+    outline: 1px solid var(--color-brand);
 }
 
 .inputIcon {
@@ -34,5 +36,5 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: white;
+    background-color: var(--color-white);
 }

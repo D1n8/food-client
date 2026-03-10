@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import CategoryStore from "store/CategoryStore";
-import styles from './CategoryDropdown.module.scss'
-import MultiDropdown from "components/MultiDropdown";
+import MultiDropdown from "components/Dropdowns/MultiDropdown";
 import { useSearchParams } from "react-router";
-import type { Option } from 'components/MultiDropdown/types/types'
+import type { Option } from 'components/Dropdowns/types/types'
 import { formatSeletedCategories } from "utils/utils";
 import { observer } from "mobx-react-lite";
 
@@ -52,7 +51,6 @@ const CategoryDropdown = observer(() => {
     return (
         <>
             <MultiDropdown
-                className={styles.multiDropdown}
                 options={categoryOptions}
                 value={localSelected}
                 onChange={handleChange}

@@ -7,7 +7,7 @@
     width: 40%;
     left: 0;
     top: 64px;
-    background-color: white;
+    background-color: var(--color-white);
     z-index: 10;
     opacity: 0;
     transform: translateX(-100px);
@@ -44,9 +44,9 @@
 }
 
 .link:not(:last-child) {
-    border-bottom: 1px solid $brand;
+    border-bottom: 1px solid var(--color-brand);
 }
 
 .link:hover {
-    color: $brand;
+    color: var(--color-brand);
 }

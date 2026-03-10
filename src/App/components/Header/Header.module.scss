@@ -4,7 +4,7 @@
     position: sticky;
     width: 100%;
     top: 0;
-    background-color: white;
+    background-color: var(--color-white);
     z-index: 10;
 }
 
@@ -28,6 +28,7 @@
 
 .title {
     width: 105px;
+    color: var(--color-text);
 
     @include respond(lg) {
         width: 55px;
@@ -40,6 +41,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+
 
     @include respond(md){
         justify-content: end;
@@ -63,6 +65,7 @@
 .pageLinks {
     display: flex;
     gap: 16px;
+    
 
     @include respond(md){
         display: none
@@ -79,6 +82,10 @@
     }
 }
 
+.link{
+    color: var(--color-text);
+}
+
 .link:hover{
-    color: $brand;
+    color: var(--color-brand);
 }

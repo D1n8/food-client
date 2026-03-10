@@ -45,7 +45,7 @@ const Recipe = observer(() => {
     if (isError) {
         return (
             <div className={styles.recipePage}>
-                <Text view="p-18" color="accent">Error loading recipe</Text>
+                <Text view="p-18" color="primary">Error loading recipe</Text>
             </div>
         )
     }
@@ -61,7 +61,7 @@ const Recipe = observer(() => {
                     <ArrowBack />
                 </button>
 
-                <Text className={styles.title} tag='h2' view='title'>{recipe.name}</Text>
+                <Text className={styles.title} color='primary' tag='h2' view='title'>{recipe.name}</Text>
             </div>
 
             <div className={styles.about}>
@@ -81,11 +81,11 @@ const Recipe = observer(() => {
             </div>
 
 
-            <Text className={styles.descr} tag="p" view="p-16">{parse(recipe.summary)}</Text>
+            <Text className={styles.descr} color='primary' tag="p" view="p-16">{parse(recipe.summary)}</Text>
 
             <div className={styles.thingsContainer}>
                 <div className={styles.ingredients}>
-                    <Text tag="h3" view='p-20' className={styles.subtitle}>Ingredients</Text>
+                    <Text tag="h3" view='p-20' color='primary' className={styles.subtitle}>Ingredients</Text>
                     <ul className={styles.ingredientsList}>
                         {
                             recipe.ingredients.map(ingredient =>
@@ -96,7 +96,7 @@ const Recipe = observer(() => {
                 </div>
 
                 <div className={styles.equipments}>
-                    <Text tag="h3" view='p-20' className={styles.subtitle}>Equipment</Text>
+                    <Text tag="h3" view='p-20' color='primary' className={styles.subtitle}>Equipment</Text>
                     <ul className={styles.equipmentsList}>
                         {
                             recipe.equipments.map(equipment =>
@@ -108,7 +108,7 @@ const Recipe = observer(() => {
             </div>
 
             <div className={styles.directions}>
-                <Text tag="h3" view='p-20' className={styles.subtitle}>Directions</Text>
+                <Text tag="h3" view='p-20' color='primary' className={styles.subtitle}>Directions</Text>
                 <ul className={styles.directionsList}>
                     {
                         recipe.directions.map((direction, index) =>

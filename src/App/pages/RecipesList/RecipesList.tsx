@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import styles from './RecipesList.module.scss';
-import RecipeCard from '../../../components/RecipeCard';
+import RecipeCard from 'components/RecipeCard';
 import Button from 'components/Button';
 import Text from 'components/Text';
-import { useNavigate, useSearchParams } from 'react-router';
-import Clock from 'components/Icons/Clock';
+import { useNavigate } from 'react-router';
 import { formatIngredients, formatKcal } from 'utils/utils';
 import Loader from 'components/Loader';
 import { observer } from 'mobx-react-lite';
@@ -16,25 +15,28 @@ import CategoryDropdown from './components/CategoryDropdown';
 import { userStore } from 'store/UserStore';
 import FavoritesStore from 'store/FavoritesStore';
 import { routes } from 'config/routes';
+import CaptionSlot from 'components/CaptionSlot';
+import SortDropdown from './components/SortDropdown';
+import { useRecipeParams } from './hooks/useRecipeParams';
+import ScrollToTop from 'components/ScrollToTop';
+import VegetarianCheckbox from './components/VegetarianCheckbox';
 
 const RecipesList = observer(() => {
     const navigate = useNavigate()
-    const [searchParams] = useSearchParams()
     const [recipeListStore] = useState(() => new RecipeListStore())
     const [favoritesStore] = useState(() => new FavoritesStore())
     const { isAuth } = userStore
+    const { query, sort, isVegetarian, categories, listKey } = useRecipeParams()
 
     useEffect(() => {
-        const query = searchParams.get('name') || ''
-        const categoriesParam = searchParams.get('categories')
-        const urlCategories = categoriesParam ? categoriesParam.split(',') : []
+        recipeListStore.fetchRecipeList(query, categories, sort, isVegetarian)
+    }, [recipeListStore, query, sort, categories, isVegetarian])
 
-        recipeListStore.fetchRecipeList(query, urlCategories)
-
+    useEffect(() => {
         if (isAuth) {
             favoritesStore.fetchFavorites()
         }
-    }, [recipeListStore, searchParams, isAuth, favoritesStore])
+    }, [isAuth, favoritesStore])
 
     const handleCardClick = useCallback((id: string) => {
         navigate(routes.recipe.create(id))
@@ -50,7 +52,7 @@ const RecipesList = observer(() => {
 
         if (favoritesStore.favoritesDocIds.has(docId)) {
             favoritesStore.removeFromFavorites(actionId)
-        } else{ 
+        } else {
             favoritesStore.addToFavorites(actionId)
         }
     }, [favoritesStore, isAuth, navigate])
@@ -62,18 +64,25 @@ const RecipesList = observer(() => {
     return (
         <div className={styles.listPage}>
             <div className={styles.hero}></div>
-
+            
             <section className={styles.listPageContainer}>
                 <Text
                     className={styles.subtitle}
                     view='p-20'
+                    color='primary'
                     tag='h2'>Find the perfect food and <u>drink ideas</u> for every occasion, from <u>weeknight dinners</u> to <u>holiday feasts</u>.</Text>
 
                 <Search />
-
-                <CategoryDropdown />
+                <div className={styles.filtersContainer}>
+                    <div className={styles.filtersBox}>
+                        <SortDropdown />
+                        <VegetarianCheckbox />
+                    </div>
+                    <CategoryDropdown />
+                </div>
 
                 <InfiniteScroll
+                    key={listKey}
                     style={{ overflow: 'visible' }}
                     dataLength={recipes.length}
                     next={recipeListStore.loadMore}
@@ -94,9 +103,7 @@ const RecipesList = observer(() => {
                                     image={recipe.images[0].url}
                                     title={recipe.name}
                                     subtitle={formatIngredients(recipe.ingredients)}
-                                    captionSlot={
-                                        <><Clock />{recipe.totalTime} minutes</>
-                                    }
+                                    captionSlot={<CaptionSlot totalTime={recipe.totalTime} rating={recipe.rating} />}
                                     contentSlot={<Text color='accent' view='p-18'>{formatKcal(recipe.calories)} kcal</Text>}
                                     actionSlot={<Button children={isFavorite ? 'Unsave' : 'Save'} onClick={(e) => handleFavoriteClick(e, recipe.documentId, recipe.id)} />}
                                     onClick={() => handleCardClick(recipe.documentId)}
@@ -109,10 +116,12 @@ const RecipesList = observer(() => {
 
                     {
                         (!isLoading && recipes.length === 0) && (
-                            <Text view="p-18">No recipes found</Text>
+                            <Text color='primary' view="p-18">No recipes found</Text>
                         )
                     }
                 </InfiniteScroll>
+
+                <ScrollToTop />
             </section>
         </div>
 

@@ -23,10 +23,10 @@ const RecipeCard: React.FC<CardProps> = (props) => {
                 <div className={styles.textBox}>
                     {
                         props.captionSlot &&
-                        <Text color='secondary' view='p-14' className={styles.captionSlot}>{props.captionSlot}</Text>
+                        <div className={styles.captionSlot}>{props.captionSlot}</div>
                     }
 
-                    <Text className={styles.title} view='p-20' maxLines={1}>{props.title}</Text>
+                    <Text className={styles.title} color='primary' view='p-20' maxLines={1}>{props.title}</Text>
                     <Text className={styles.subtitle} view='p-16' color='secondary' maxLines={2}>{props.subtitle}</Text>
                 </div>
 
